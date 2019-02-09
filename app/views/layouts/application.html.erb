@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>LittleShop</title>
+    <title>LittleShopBaseSmall</title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -9,6 +9,15 @@
   </head>
 
   <body>
-    <%= yield %>
+    <%= render '/layouts/nav' %>
+
+    <div class="container" id="body-content-no-nav">
+      <% flash.each do |flash_type, flash_message| %>
+      <div class="alert alert-<%= flash_type %>" role="alert"><%= flash_message %></div>
+      <% end %>
+
+      <%= yield %>
+    </div>
+
   </body>
 </html>

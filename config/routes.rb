@@ -10,6 +10,8 @@ Rails.application.routes.draw do
     resources :orders, only: [:index]
   end
 
+  resources :users, only: [:create]
+
   get '/cart', to: 'cart#show'
 
   resources :items, only: [:index]

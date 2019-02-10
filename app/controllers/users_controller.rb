@@ -12,9 +12,10 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       session[:user_id] = @user.id
-      redirect_to profile_path
       flash[:success] = "Welcome #{@user.name}, you are now registered and logged in."
+      redirect_to profile_path
     else
+      flash[:alert] = "Required field(s) missing."
       render :new
     end
   end

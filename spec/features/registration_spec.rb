@@ -40,6 +40,7 @@ RSpec.describe 'User Registration' do
 
     click_on 'Create User'
 
+    expect(page).to have_content("Required field(s) missing.")
     expect(find_field('Name').value).to eq('Megan')
     expect(find_field('Email').value).to eq('megan@example.com')
     expect(find_field('City').value).to eq('Fairfield')

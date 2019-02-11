@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :order do
+  factory :order, class: Order do
     user
     status { :pending }
   end

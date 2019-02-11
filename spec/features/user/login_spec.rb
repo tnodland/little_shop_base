@@ -73,5 +73,33 @@ RSpec.describe 'login workflow' do
         expect(current_path).to eq(login_path)
         expect(page).to have_content('Your account is inactive, contact an admin for help')
     end
+
+    describe 'redirects the user if they are already logged in' do
+      scenario 'regular user' do
+        @user = create(:user)
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+      end
+      scenario 'merchant user' do
+        @user = create(:merchant)
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+      end
+      scenario 'admin user' do
+        @user = create(:admin)
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+      end
+      after :each do
+        visit login_path
+
+        if @user.default?
+          expect(current_path).to eq(profile_path)
+        elsif @user.merchant?
+          expect(current_path).to eq(dashboard_path)
+        elsif @user.admin?
+          expect(current_path).to eq(admin_dashboard_index_path)
+        end
+      end
+
+
+    end
   end
 end

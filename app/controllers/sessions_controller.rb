@@ -1,5 +1,8 @@
 class SessionsController < ApplicationController
   def new
+    if current_user
+      redirect_by_role
+    end
   end
 
   def create
@@ -7,13 +10,7 @@ class SessionsController < ApplicationController
     if @user && @user.authenticate(params[:password])
       if @user.active?
         session[:user_id] = @user.id
-        if current_reguser?
-          redirect_to profile_path
-        elsif current_merchant?
-          redirect_to dashboard_path
-        elsif current_admin?
-          redirect_to admin_dashboard_index_path
-        end
+        redirect_by_role
       else
         flash[:error] = 'Your account is inactive, contact an admin for help'
         render :new
@@ -26,5 +23,17 @@ class SessionsController < ApplicationController
 
   def destroy
     redirect_to root_path
+  end
+
+  private
+
+  def redirect_by_role
+    if current_reguser?
+      redirect_to profile_path
+    elsif current_merchant?
+      redirect_to dashboard_path
+    elsif current_admin?
+      redirect_to admin_dashboard_index_path
+    end
   end
 end

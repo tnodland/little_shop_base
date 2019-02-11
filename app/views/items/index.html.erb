@@ -1,1 +1,7 @@
 <h1>Items Catalog</h1>
+
+<% @items.each do |item| %>
+  <%= tag.section id: "item-#{item.id}" do %>
+  <%= render partial: "card", locals: {item: item, img_width: 200}%>
+  <% end %>
+<% end %>

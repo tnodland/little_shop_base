@@ -54,9 +54,10 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'bootstrap', '~> 4.0.0'
 gem 'jquery-rails', '~> 4.3.0'
 
+gem 'factory_bot_rails'
+
 group :development, :test do
   gem 'brakeman'
-  gem 'factory_bot_rails'
   gem 'launchy'
   gem 'pry'
   gem 'rspec-rails'

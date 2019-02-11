@@ -29,7 +29,6 @@ class UsersController < ApplicationController
     @user = user
     if User.find_by(email: @user.email)
       @user.email = ""
-      flash[:alert] = "Email is already in use."
     else
       flash[:alert] = "Required field(s) missing."
     end

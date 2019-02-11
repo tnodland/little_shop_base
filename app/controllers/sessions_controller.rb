@@ -1,5 +1,14 @@
 class SessionsController < ApplicationController
   def new
+    if current_user
+      if current_reguser?
+        redirect_to profile_path
+      elsif current_merchant?
+        redirect_to dashboard_path
+      elsif current_admin?
+        redirect_to admin_dashboard_index_path
+      end
+    end
   end
 
   def create

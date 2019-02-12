@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :require_user, only: [:show]
+  before_action :require_user, only: [:show, :edit]
 
   def new
     @user = User.new
@@ -16,6 +16,21 @@ class UsersController < ApplicationController
       redirect_to profile_path
     else
       invalid_user(@user)
+    end
+  end
+
+  def edit
+    @user = current_user
+  end
+
+  def update
+    @user = current_user
+    if @user.update(user_params)
+      flash[:success] = "Your profile has been updated"
+      redirect_to profile_path
+    else
+      flash[:alert] = "That email address is already in use"
+      render :edit
     end
   end
 

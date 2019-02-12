@@ -7,11 +7,12 @@ Rails.application.routes.draw do
 
   get '/register', to: 'users#new', as: :registration
   get '/profile', to: 'users#show', as: :profile
+  get '/profile/edit', to: 'users#edit', as: :edit_profile
   namespace :profile do
     resources :orders, only: [:index]
   end
 
-  resources :users, only: [:create, :edit]
+  resources :users, only: [:create, :update]
 
   get '/cart', to: 'cart#show'
 

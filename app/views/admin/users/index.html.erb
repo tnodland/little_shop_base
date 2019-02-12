@@ -1,1 +1,7 @@
 <h1>Admin Dashboard - All Users</h1>
+
+<% @users.each do |user| %>
+  <%= tag.section id: "user-#{user.id}" do %>
+  <%= render partial: "card", locals: {user: user}%>
+  <% end %>
+<% end %>

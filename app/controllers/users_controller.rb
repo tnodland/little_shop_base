@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :require_user, only: [:show]
+  before_action :require_user, only: [:show, :edit]
 
   def new
     @user = User.new
@@ -17,6 +17,17 @@ class UsersController < ApplicationController
     else
       invalid_user(@user)
     end
+  end
+
+  def edit
+    @user = current_user
+  end
+
+  def update
+    @user = current_user
+    @user.update(user_params)
+    flash[:success] = "Your profile has been updated"
+    redirect_to profile_path
   end
 
   private

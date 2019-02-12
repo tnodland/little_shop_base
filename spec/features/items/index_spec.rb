@@ -22,11 +22,6 @@ RSpec.describe 'items index workflow', type: :feature do
         expect(page).to_not have_css("#item-#{item.id}")
         expect(page).to_not have_content(item.name)
       end
-
-      src = page.find("#item-#{items[0].id}-image")['src']
-      binding.pry
-      find(:css, "img[src*=\"#{src}\"]").click
-      expect(current_path).to eq(item_path(items[0]))
     end
   end
 

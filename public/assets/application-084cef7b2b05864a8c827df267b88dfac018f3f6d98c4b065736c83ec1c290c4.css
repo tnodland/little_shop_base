@@ -9985,14 +9985,112 @@ a.text-dark:hover, a.text-dark:focus {
     border: 1px solid #ddd !important;
   }
 }
-/* line 18, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
+/* line 1, /Users/id/src/me/little_shop/app/assets/stylesheets/base-elements.scss */
+body {
+  background-color: #fff;
+  color: #333;
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+/* line 9, /Users/id/src/me/little_shop/app/assets/stylesheets/base-elements.scss */
+p, ol, ul, td {
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+/* line 15, /Users/id/src/me/little_shop/app/assets/stylesheets/base-elements.scss */
+pre {
+  background-color: #eee;
+  padding: 10px;
+  font-size: 11px;
+}
+
+/* line 21, /Users/id/src/me/little_shop/app/assets/stylesheets/base-elements.scss */
+a {
+  color: #000;
+}
+/* line 24, /Users/id/src/me/little_shop/app/assets/stylesheets/base-elements.scss */
+a:visited {
+  color: #666;
+}
+/* line 28, /Users/id/src/me/little_shop/app/assets/stylesheets/base-elements.scss */
+a:hover {
+  color: #fff;
+  background-color: #000;
+}
+
+/* line 34, /Users/id/src/me/little_shop/app/assets/stylesheets/base-elements.scss */
+th {
+  padding-bottom: 5px;
+}
+
+/* line 38, /Users/id/src/me/little_shop/app/assets/stylesheets/base-elements.scss */
+td {
+  padding: 0 5px 7px;
+}
+
+/* line 48, /Users/id/src/me/little_shop/app/assets/stylesheets/base-elements.scss */
+label {
+  display: block;
+}
+
+/* line 1, /Users/id/src/me/little_shop/app/assets/stylesheets/base-classes.scss */
+.field_with_errors {
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+
+/* line 7, /Users/id/src/me/little_shop/app/assets/stylesheets/base-classes.scss */
+.item-card {
+  width: 18rem;
+}
+
+/* line 11, /Users/id/src/me/little_shop/app/assets/stylesheets/base-classes.scss */
+.user-card {
+  width: 18rem;
+}
+
+/* line 1, /Users/id/src/me/little_shop/app/assets/stylesheets/base-ids.scss */
+#notice {
+  color: green;
+}
+
+/* line 5, /Users/id/src/me/little_shop/app/assets/stylesheets/base-ids.scss */
+#error_explanation {
+  width: 450px;
+  border: 2px solid red;
+  padding: 7px 7px 0;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+/* line 12, /Users/id/src/me/little_shop/app/assets/stylesheets/base-ids.scss */
+#error_explanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px -7px 0;
+  background-color: #c00;
+  color: #fff;
+}
+/* line 22, /Users/id/src/me/little_shop/app/assets/stylesheets/base-ids.scss */
+#error_explanation ul li {
+  font-size: 12px;
+  list-style: square;
+}
+
+/* line 21, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
 .navbar-icon-top .navbar-nav .nav-link > .fa {
   position: relative;
   width: 36px;
   font-size: 24px;
 }
 
-/* line 24, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
+/* line 27, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
 .navbar-icon-top .navbar-nav .nav-link > .fa > .badge {
   font-size: 0.75rem;
   position: absolute;
@@ -10000,19 +10098,19 @@ a.text-dark:hover, a.text-dark:focus {
   font-family: sans-serif;
 }
 
-/* line 31, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
+/* line 34, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
 .navbar-icon-top .navbar-nav .nav-link > .fa {
   top: 3px;
   line-height: 12px;
 }
 
-/* line 36, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
+/* line 39, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
 .navbar-icon-top .navbar-nav .nav-link > .fa > .badge {
   top: -10px;
 }
 
 @media (min-width: 576px) {
-  /* line 41, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
+  /* line 44, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
   .navbar-icon-top.navbar-expand-sm .navbar-nav .nav-link {
     text-align: center;
     display: table-cell;
@@ -10022,7 +10120,7 @@ a.text-dark:hover, a.text-dark:focus {
     padding-bottom: 0;
   }
 
-  /* line 50, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
+  /* line 53, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
   .navbar-icon-top.navbar-expand-sm .navbar-nav .nav-link > .fa {
     display: block;
     width: 48px;
@@ -10031,13 +10129,13 @@ a.text-dark:hover, a.text-dark:focus {
     line-height: 24px;
   }
 
-  /* line 58, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
+  /* line 61, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
   .navbar-icon-top.navbar-expand-sm .navbar-nav .nav-link > .fa > .badge {
     top: -7px;
   }
 }
 @media (min-width: 768px) {
-  /* line 64, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
+  /* line 67, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
   .navbar-icon-top.navbar-expand-md .navbar-nav .nav-link {
     text-align: center;
     display: table-cell;
@@ -10047,7 +10145,7 @@ a.text-dark:hover, a.text-dark:focus {
     padding-bottom: 0;
   }
 
-  /* line 73, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
+  /* line 76, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
   .navbar-icon-top.navbar-expand-md .navbar-nav .nav-link > .fa {
     display: block;
     width: 48px;
@@ -10056,13 +10154,13 @@ a.text-dark:hover, a.text-dark:focus {
     line-height: 24px;
   }
 
-  /* line 81, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
+  /* line 84, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
   .navbar-icon-top.navbar-expand-md .navbar-nav .nav-link > .fa > .badge {
     top: -7px;
   }
 }
 @media (min-width: 992px) {
-  /* line 87, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
+  /* line 90, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
   .navbar-icon-top.navbar-expand-lg .navbar-nav .nav-link {
     text-align: center;
     display: table-cell;
@@ -10072,7 +10170,7 @@ a.text-dark:hover, a.text-dark:focus {
     padding-bottom: 0;
   }
 
-  /* line 96, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
+  /* line 99, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
   .navbar-icon-top.navbar-expand-lg .navbar-nav .nav-link > .fa {
     display: block;
     width: 48px;
@@ -10081,13 +10179,13 @@ a.text-dark:hover, a.text-dark:focus {
     line-height: 24px;
   }
 
-  /* line 104, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
+  /* line 107, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
   .navbar-icon-top.navbar-expand-lg .navbar-nav .nav-link > .fa > .badge {
     top: -7px;
   }
 }
 @media (min-width: 1200px) {
-  /* line 110, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
+  /* line 113, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
   .navbar-icon-top.navbar-expand-xl .navbar-nav .nav-link {
     text-align: center;
     display: table-cell;
@@ -10097,7 +10195,7 @@ a.text-dark:hover, a.text-dark:focus {
     padding-bottom: 0;
   }
 
-  /* line 119, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
+  /* line 122, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
   .navbar-icon-top.navbar-expand-xl .navbar-nav .nav-link > .fa {
     display: block;
     width: 48px;
@@ -10106,7 +10204,7 @@ a.text-dark:hover, a.text-dark:focus {
     line-height: 24px;
   }
 
-  /* line 127, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
+  /* line 130, /Users/id/src/me/little_shop/app/assets/stylesheets/application.scss */
   .navbar-icon-top.navbar-expand-xl .navbar-nav .nav-link > .fa > .badge {
     top: -7px;
   }

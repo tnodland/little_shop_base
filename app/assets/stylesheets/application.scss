@@ -11,10 +11,13 @@
  * It is generally better to create a new file per style scope.
  *
  */
- @import 'bootstrap';
- @import url("//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+@import 'bootstrap';
+@import url("//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+@import 'base-elements';
+@import 'base-classes';
+@import 'base-ids';
 
- .navbar-icon-top .navbar-nav .nav-link > .fa {
+.navbar-icon-top .navbar-nav .nav-link > .fa {
   position: relative;
   width: 36px;
   font-size: 24px;

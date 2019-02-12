@@ -12,9 +12,20 @@
       <%= link_to item.name, item_path(item) %>
     <% end %>
     <p>Price: <%= number_to_currency(item.price) %></p>
+    <p>Description:<br/>
+      <em><%= item.description %></em>
+    </p>
     <p>
       <strong>Sold by:</strong> <%= item.user.name %><br/>
+
+      <% if item.inventory > 0 %>
       <strong>In stock:</strong> <%= item.inventory %>
+      <% else %>
+      <strong>Out of Stock</strong>
+      <% end %><br/>
+
+      <strong>Average time to fulfill:</strong>
+        <%= item.avg_time_to_fulfill %>!
     </p>
   <% end %>
 <% end %>

@@ -12,4 +12,17 @@ class Item < ApplicationRecord
     only_integer: true,
     greater_than_or_equal_to: 0
   }
+
+  def avg_time_to_fulfill
+    data = Item.joins(:order_items)
+      .select("items.*, avg(order_items.updated_at - order_items.created_at) as avg_time")
+      .where(id: self.id)
+      .group(:id)
+      .first
+    unless data.nil?
+      data.avg_time
+    else
+      'n/a'
+    end
+  end
 end

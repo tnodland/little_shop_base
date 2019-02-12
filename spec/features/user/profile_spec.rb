@@ -56,6 +56,7 @@ RSpec.describe 'user profile' do
       describe 'succeeds with allowable updates' do
         it 'all attributes are updated' do
           allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+          old_digest = @user.password_digest
 
           visit edit_profile_path
 
@@ -65,133 +66,6 @@ RSpec.describe 'user profile' do
           fill_in :user_city, with: @updated_city
           fill_in :user_state, with: @updated_state
           fill_in :user_zip, with: @updated_zip
-          fill_in :user_password, with: @updated_password
-          fill_in :user_password_confirmation, with: @updated_password
-
-          click_button 'Update User'
-
-          expect(current_path).to eq(profile_path)
-          expect(page).to have_content("Your profile has been updated")
-          expect(page).to have_content("Name: #{@updated_name}")
-          expect(page).to have_content("Email: #{@updated_email}")
-          expect(page).to have_content("Address: #{@updated_address}")
-          expect(page).to have_content("City: #{@updated_city}")
-          expect(page).to have_content("State: #{@updated_state}")
-          expect(page).to have_content("Zip: #{@updated_zip}")
-        end
-        it 'only name is updated' do
-          allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
-
-          visit edit_profile_path
-
-          fill_in :user_name, with: @updated_name
-
-          click_button 'Update User'
-
-          expect(current_path).to eq(profile_path)
-          expect(page).to have_content("Your profile has been updated")
-          expect(page).to have_content("Name: #{@updated_name}")
-          expect(page).to have_content("Email: #{@user.email}")
-          expect(page).to have_content("Address: #{@user.address}")
-          expect(page).to have_content("City: #{@user.city}")
-          expect(page).to have_content("State: #{@user.state}")
-          expect(page).to have_content("Zip: #{@user.zip}")
-        end
-        it 'only email is updated' do
-          allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
-
-          visit edit_profile_path
-
-          fill_in :user_email, with: @updated_email
-
-          click_button 'Update User'
-
-          expect(current_path).to eq(profile_path)
-          expect(page).to have_content("Your profile has been updated")
-          expect(page).to have_content("Email: #{@updated_email}")
-          expect(page).to have_content("Name: #{@user.name}")
-          expect(page).to have_content("Address: #{@user.address}")
-          expect(page).to have_content("City: #{@user.city}")
-          expect(page).to have_content("State: #{@user.state}")
-          expect(page).to have_content("Zip: #{@user.zip}")
-        end
-        it 'only address is updated' do
-          allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
-
-          visit edit_profile_path
-
-          fill_in :user_address, with: @updated_address
-
-          click_button 'Update User'
-
-          expect(current_path).to eq(profile_path)
-          expect(page).to have_content("Your profile has been updated")
-          expect(page).to have_content("Address: #{@updated_address}")
-          expect(page).to have_content("Name: #{@user.name}")
-          expect(page).to have_content("Email: #{@user.email}")
-          expect(page).to have_content("City: #{@user.city}")
-          expect(page).to have_content("State: #{@user.state}")
-          expect(page).to have_content("Zip: #{@user.zip}")
-        end
-        it 'only city is updated' do
-          allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
-
-          visit edit_profile_path
-
-          fill_in :user_city, with: @updated_city
-
-          click_button 'Update User'
-
-          expect(current_path).to eq(profile_path)
-          expect(page).to have_content("Your profile has been updated")
-          expect(page).to have_content("City: #{@updated_city}")
-          expect(page).to have_content("Name: #{@user.name}")
-          expect(page).to have_content("Email: #{@user.email}")
-          expect(page).to have_content("Address: #{@user.address}")
-          expect(page).to have_content("State: #{@user.state}")
-          expect(page).to have_content("Zip: #{@user.zip}")
-        end
-        it 'only state is updated' do
-          allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
-
-          visit edit_profile_path
-
-          fill_in :user_state, with: @updated_state
-
-          click_button 'Update User'
-
-          expect(current_path).to eq(profile_path)
-          expect(page).to have_content("Your profile has been updated")
-          expect(page).to have_content("Name: #{@user.name}")
-          expect(page).to have_content("Email: #{@user.email}")
-          expect(page).to have_content("Address: #{@user.address}")
-          expect(page).to have_content("City: #{@user.city}")
-          expect(page).to have_content("Zip: #{@user.zip}")
-          expect(page).to have_content("State: #{@updated_state}")
-        end
-        it 'only zip is updated' do
-          allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
-
-          visit edit_profile_path
-
-          fill_in :user_zip, with: @updated_zip
-
-          click_button 'Update User'
-
-          expect(current_path).to eq(profile_path)
-          expect(page).to have_content("Your profile has been updated")
-          expect(page).to have_content("Name: #{@user.name}")
-          expect(page).to have_content("Email: #{@user.email}")
-          expect(page).to have_content("Address: #{@user.address}")
-          expect(page).to have_content("City: #{@user.city}")
-          expect(page).to have_content("State: #{@user.state}")
-          expect(page).to have_content("Zip: #{@updated_zip}")
-        end
-        it 'only password is updated' do
-          allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
-
-          visit edit_profile_path
-
           fill_in :user_password, with: @updated_password
           fill_in :user_password_confirmation, with: @updated_password
 
@@ -201,13 +75,13 @@ RSpec.describe 'user profile' do
 
           expect(current_path).to eq(profile_path)
           expect(page).to have_content("Your profile has been updated")
-          expect(page).to have_content("Name: #{@user.name}")
-          expect(page).to have_content("Email: #{@user.email}")
-          expect(page).to have_content("Address: #{@user.address}")
-          expect(page).to have_content("City: #{@user.city}")
-          expect(page).to have_content("State: #{@user.state}")
-          expect(page).to have_content("Zip: #{@user.zip}")
-          expect(updated_user.authenticate(@updated_password)).to_not eq(false)
+          expect(page).to have_content("Name: #{@updated_name}")
+          expect(page).to have_content("Email: #{@updated_email}")
+          expect(page).to have_content("Address: #{@updated_address}")
+          expect(page).to have_content("City: #{@updated_city}")
+          expect(page).to have_content("State: #{@updated_state}")
+          expect(page).to have_content("Zip: #{@updated_zip}")
+          expect(updated_user.password_digest).to_not eq(old_digest)
         end
       end
     end
@@ -223,14 +97,6 @@ RSpec.describe 'user profile' do
       click_button 'Update User'
 
       expect(page).to have_content("That email address is already in use")
-      expect(find_field('Name').value).to eq(@user.name)
-      expect(find_field('Email').value).to eq(@user.email)
-      expect(find_field('Address').value).to eq(@user.address)
-      expect(find_field('City').value).to eq(@user.city)
-      expect(find_field('State').value).to eq(@user.state)
-      expect(find_field('Zip').value).to eq(@user.zip)
-      expect(find_field('Password').value).to eq(nil)
-      expect(find_field('Password confirmation').value).to eq(nil)
     end
   end
 end

@@ -6,8 +6,10 @@ Rails.application.routes.draw do
   get '/logout', to: 'sessions#destroy'
 
   get '/register', to: 'users#new', as: :registration
-  get '/profile', to: 'users#show', as: :profile
-  get '/profile/edit', to: 'users#edit', as: :edit_profile
+  scope :profile do
+    get '/', to: 'users#show', as: :profile
+    get '/edit', to: 'users#edit', as: :edit_profile
+  end
   namespace :profile do
     resources :orders, only: [:index]
   end

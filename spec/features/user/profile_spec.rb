@@ -213,7 +213,24 @@ RSpec.describe 'user profile' do
     end
 
     it 'fails with non-unique email address change' do
+      create(:user, email: 'megan@example.com')
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
 
+      visit edit_profile_path
+
+      fill_in :user_email, with: 'megan@example.com'
+
+      click_button 'Update User'
+
+      expect(page).to have_content("That email address is already in use")
+      expect(find_field('Name').value).to eq(@user.name)
+      expect(find_field('Email').value).to eq(@user.email)
+      expect(find_field('Address').value).to eq(@user.address)
+      expect(find_field('City').value).to eq(@user.city)
+      expect(find_field('State').value).to eq(@user.state)
+      expect(find_field('Zip').value).to eq(@user.zip)
+      expect(find_field('Password').value).to eq(nil)
+      expect(find_field('Password confirmation').value).to eq(nil)
     end
   end
 end

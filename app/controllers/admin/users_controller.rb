@@ -30,9 +30,6 @@ class Admin::UsersController < Admin::BaseController
     if @user.update(user_params)
       flash[:success] = "Profile has been updated"
       redirect_to admin_user_path(@user)
-    # else
-    #   flash[:alert] = "That email address is already in use"
-    #   render :'users/edit'
     end
   end
 

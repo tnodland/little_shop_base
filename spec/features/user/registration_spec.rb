@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'User Registration' do
+RSpec.describe 'User Registration', type: :feature do
   before :each do
     @name = 'Megan'
     @address = '310 Riverside Dr'

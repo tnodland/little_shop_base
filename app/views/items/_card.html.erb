@@ -11,10 +11,12 @@
     <%= tag.h5 class: "card-title" do %>
       <%= link_to item.name, item_path(item) %>
     <% end %>
+
     <p>Price: <%= number_to_currency(item.price) %></p>
     <p>Description:<br/>
       <em><%= item.description %></em>
     </p>
+
     <p>
       <strong>Sold by:</strong> <%= item.user.name %><br/>
 
@@ -27,5 +29,11 @@
       <strong>Average time to fulfill:</strong>
         <%= item.avg_time_to_fulfill %>!
     </p>
+
+    <% if current_reguser? || current_user.nil? %>
+      <p>
+      <%= button_to 'Add to Cart', cart_item_path(item), method: :post %>
+      </p>
+    <% end %>
   <% end %>
 <% end %>

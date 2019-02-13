@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Log out workflow' do
+RSpec.describe 'Log out workflow', type: :feature do
   it 'destroys their session tracking for user' do
     @user = create(:user, email:'user@gmail.com', password: 'password')
 

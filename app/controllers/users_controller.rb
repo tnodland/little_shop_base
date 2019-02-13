@@ -1,8 +1,10 @@
 class UsersController < ApplicationController
-  before_action :require_user, only: [:show, :edit]
+  before_action :require_user, only: [:show]
+  before_action :user_or_admin, only: [:edit]
 
   def new
     @user = User.new
+    @form_path = @user
   end
 
   def show
@@ -21,10 +23,12 @@ class UsersController < ApplicationController
 
   def edit
     @user = current_user
+    @form_path = @user
   end
 
   def update
     @user = current_user
+    @form_path = @user
     if @user.update(user_params)
       flash[:success] = "Your profile has been updated"
       redirect_to profile_path
@@ -42,6 +46,7 @@ class UsersController < ApplicationController
 
   def invalid_user(user)
     @user = user
+    @form_path = @user
     if User.find_by(email: @user.email)
       @user.email = ""
     else

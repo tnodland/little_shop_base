@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'login workflow' do
+RSpec.describe 'login workflow', type: :feature do
   describe 'visitors try to login' do
     context 'succeeds when credentials are correct' do
       scenario 'as a regular user' do

@@ -6,6 +6,11 @@ class CartController < ApplicationController
     @items = @cart.items
   end
 
+  def destroy
+    session.delete(:cart)
+    redirect_to cart_path
+  end
+
   def add
     add_item_to_cart(params[:id])
     redirect_to items_path

@@ -1,1 +1,15 @@
 <h1>User Order Index</h1>
+
+<% if @orders.empty? %>
+  <p>You have no orders yet</p>
+<% else %>
+  <% @orders.each do |order| %>
+    <%= tag.div class: "card float-left m-3 order-card" do %>
+      <%= tag.div class: "card-body" do %>
+        <%= tag.div id: "order-#{order.id}" do %>
+          <p>Order ID <%= order.id %></p>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

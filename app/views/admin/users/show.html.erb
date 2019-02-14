@@ -1,1 +1,11 @@
 <h1>Admin Dashboard - User Profile</h1>
+
+<p>Name: <%= @user.name %></p>
+<p>Role: <%= @user.role %></p>
+<p>Email: <%= @user.email %></p>
+<p>Address: <%= @user.address %></p>
+<p>City: <%= @user.city %></p>
+<p>State: <%= @user.state %></p>
+<p>Zip: <%= @user.zip %></p>
+
+<%= link_to 'Edit', edit_admin_user_path(@user) %>

@@ -11,4 +11,8 @@ class User < ApplicationRecord
 
   validates_presence_of :name, :address, :city, :state, :zip
   validates :email, presence: true, uniqueness: true
+
+  def self.active_merchants
+    where(role: "merchant", active: true)
+  end
 end

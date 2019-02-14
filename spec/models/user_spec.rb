@@ -20,6 +20,12 @@ RSpec.describe User, type: :model do
   end
 
   describe 'class methods' do
+    it ".active_merchants" do
+      active_merchants = create_list(:merchant, 3)
+      inactive_merchant = create(:inactive_merchant)
+
+      expect(User.active_merchants).to eq(active_merchants)
+    end
   end
 
   describe 'instance methods' do

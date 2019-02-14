@@ -1,1 +1,7 @@
 <h1>Merchant List</h1>
+
+<% @merchants.each do |merchant| %>
+  <%= tag.section id: "merchant-#{merchant.id}" do %>
+    <%= render partial: "card", locals: {merchant: merchant}%>
+  <% end %>
+<% end %>

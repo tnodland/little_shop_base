@@ -3,6 +3,7 @@ class MerchantsController < ApplicationController
 
   def index
     @merchants = User.active_merchants
+    @top_three_merchants = @merchants.top_merchants_by_revenue(3)
   end
 
   def show

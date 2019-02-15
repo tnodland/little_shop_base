@@ -16,6 +16,18 @@ class User < ApplicationRecord
     where(role: "merchant", active: true)
   end
 
+  def self.top_merchants_by_revenue(limit)
+    merchants_sorted_by_revenue.limit(limit)
+  end
+
+  def self.top_merchants_by_fulfillment_time(limit)
+    merchants_sorted_by_fulfillment_time.limit(3)
+  end
+
+  def self.bottom_merchants_by_fulfillment_time(limit)
+    merchants_sorted_by_fulfillment_time("DESC").limit(3)
+  end
+
   def self.merchants_sorted_by_revenue
     # play around with hash notation
     self.joins(:items)
@@ -28,7 +40,14 @@ class User < ApplicationRecord
         .order("total DESC")
   end
 
-  def self.top_merchants_by_revenue(limit)
-    merchants_sorted_by_revenue.limit(limit)
+  def self.merchants_sorted_by_fulfillment_time(order = "ASC")
+    self.joins(:items)
+        .joins('join order_items on items.id = order_items.item_id')
+        .joins('join orders on orders.id = order_items.order_id')
+        .where('orders.status = 1')
+        .where('order_items.fulfilled = true')
+        .group(:id)
+        .select('users.*, avg(order_items.updated_at - order_items.created_at) AS fulfillment_time')
+        .order("fulfillment_time #{order}")
   end
 end

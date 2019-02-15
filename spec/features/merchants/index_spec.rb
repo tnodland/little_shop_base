@@ -41,31 +41,43 @@ RSpec.describe "merchant index workflow", type: :feature do
         o5 = create(:cancelled_order)
         o6 = create(:completed_order)
         o7 = create(:completed_order)
-        oi1 = create(:fulfilled_order_item, item: i1, order: o1)
-        oi2 = create(:fulfilled_order_item, item: i2, order: o2)
-        oi3 = create(:fulfilled_order_item, item: i3, order: o3)
-        oi4 = create(:order_item, item: i4, order: o4)
-        oi5 = create(:order_item, item: i5, order: o5)
-        oi6 = create(:fulfilled_order_item, item: i6, order: o6)
-        oi7 = create(:fulfilled_order_item, item: i7, order: o7)
+        oi1 = create(:fulfilled_order_item, item: i1, order: o1, created_at: 1.days.ago)
+        oi2 = create(:fulfilled_order_item, item: i2, order: o2, created_at: 7.days.ago)
+        oi3 = create(:fulfilled_order_item, item: i3, order: o3, created_at: 6.days.ago)
+        oi4 = create(:order_item, item: i4, order: o4, created_at: 4.days.ago)
+        oi5 = create(:order_item, item: i5, order: o5, created_at: 5.days.ago)
+        oi6 = create(:fulfilled_order_item, item: i6, order: o6, created_at: 3.days.ago)
+        oi7 = create(:fulfilled_order_item, item: i7, order: o7, created_at: 2.days.ago)
       end
 
       it "top 3 merchants by price and quantity, with their revenue" do
         visit merchants_path
 
-        within("#top-three-merchants") do
+        within("#top-three-merchants-revenue") do
           expect(page).to have_content("#{@m7.name}: $192.00")
           expect(page).to have_content("#{@m6.name}: $147.00")
           expect(page).to have_content("#{@m3.name}: $48.00")
         end
       end
 
-      xit "top 3 merchants who were fastest at fulfilling items in an order, with their times" do
+      it "top 3 merchants who were fastest at fulfilling items in an order, with their times" do
+        visit merchants_path
 
+        within("#top-three-merchants-fulfillment") do
+          expect(page).to have_content("#{@m1.name}: 1 day")
+          expect(page).to have_content("#{@m7.name}: 2 days")
+          expect(page).to have_content("#{@m6.name}: 3 days")
+        end
       end
 
-      xit "worst 3 merchants who were slowest at fulfilling items in an order, with their times" do
+      it "worst 3 merchants who were slowest at fulfilling items in an order, with their times" do
+        visit merchants_path
 
+        within("#bottom-three-merchants-fulfillment") do
+          expect(page).to have_content("#{@m3.name}: 6 days")
+          expect(page).to have_content("#{@m6.name}: 3 days")
+          expect(page).to have_content("#{@m7.name}: 2 days")
+        end
       end
 
       xit "top 3 states where any orders were shipped, and count of orders" do

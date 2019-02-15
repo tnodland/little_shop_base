@@ -15,4 +15,20 @@ class User < ApplicationRecord
   def self.active_merchants
     where(role: "merchant", active: true)
   end
+
+  def self.merchants_sorted_by_revenue
+    # play around with hash notation
+    self.joins(:items)
+        .joins('join order_items on items.id = order_items.item_id')
+        .joins('join orders on orders.id = order_items.order_id')
+        .where('orders.status = 1')
+        .where('order_items.fulfilled = true')
+        .group(:id)
+        .select('users.*, sum(order_items.quantity * order_items.price) AS total')
+        .order("total DESC")
+  end
+
+  def self.top_merchants_by_revenue(limit)
+    merchants_sorted_by_revenue.limit(limit)
+  end
 end

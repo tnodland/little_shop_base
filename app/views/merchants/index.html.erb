@@ -1,4 +1,16 @@
 <h1>Merchant List</h1>
+<%= tag.div class: "card" do %>
+  <%= tag.section class: "statistics card-body float-left m-3" do %>
+    <%= tag.section id: "top-three-merchants card-body" do %>
+      <h4 class="card-title">Top Three Merchants</h4>
+      <ul>
+        <% @top_three_merchants.each do |merchant| %>
+          <li><%= link_to merchant.name, merchant_path(merchant) %>: <%= number_to_currency(merchant.total) %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  <% end %>
+<% end %>
 
 <% @merchants.each do |merchant| %>
   <%= tag.section id: "merchant-#{merchant.id}" do %>

@@ -26,6 +26,40 @@ RSpec.describe User, type: :model do
 
       expect(User.active_merchants).to eq(active_merchants)
     end
+
+    describe "statistics" do
+      before :each do
+        @m1, @m2, @m3, @m4, @m5, @m6, @m7 = create_list(:merchant, 7)
+        i1 = create(:item, merchant_id: @m1.id)
+        i2 = create(:item, merchant_id: @m2.id)
+        i3 = create(:item, merchant_id: @m3.id)
+        i4 = create(:item, merchant_id: @m4.id)
+        i5 = create(:item, merchant_id: @m5.id)
+        i6 = create(:item, merchant_id: @m6.id)
+        i7 = create(:item, merchant_id: @m7.id)
+        o1 = create(:completed_order)
+        o2 = create(:cancelled_order)
+        o3 = create(:completed_order)
+        o4 = create(:completed_order)
+        o5 = create(:cancelled_order)
+        o6 = create(:completed_order)
+        o7 = create(:completed_order)
+        oi1 = create(:fulfilled_order_item, item: i1, order: o1)
+        oi2 = create(:fulfilled_order_item, item: i2, order: o2)
+        oi3 = create(:fulfilled_order_item, item: i3, order: o3)
+        oi4 = create(:order_item, item: i4, order: o4)
+        oi5 = create(:order_item, item: i5, order: o5)
+        oi6 = create(:fulfilled_order_item, item: i6, order: o6)
+        oi7 = create(:fulfilled_order_item, item: i7, order: o7)
+      end
+      it ".merchants_sorted_by_revenue" do
+        expect(User.merchants_sorted_by_revenue.to_a).to eq([@m7, @m6, @m3, @m1])
+      end
+
+      it ".top_merchants_by_revenue()" do
+        expect(User.top_merchants_by_revenue(3)).to eq([@m7, @m6, @m3])
+      end
+    end
   end
 
   describe 'instance methods' do

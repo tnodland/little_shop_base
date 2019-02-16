@@ -28,6 +28,15 @@ class User < ApplicationRecord
     merchants_sorted_by_fulfillment_time("DESC").limit(3)
   end
 
+  def self.top_user_states_by_order_count(limit)
+    self.joins(:orders)
+        .where('orders.status = 1')
+        .group(:state, :id)
+        .select('users.*, count(orders.id) AS all_orders')
+        .order('all_orders DESC')
+        .limit(limit)
+  end
+
   def self.merchants_sorted_by_revenue
     # play around with hash notation
     self.joins(:items)

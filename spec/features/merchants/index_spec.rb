@@ -26,6 +26,9 @@ RSpec.describe "merchant index workflow", type: :feature do
 
     describe "shows merchant statistics" do
       before :each do
+        u1 = create(:user, state: "CO")
+        u2 = create(:user, state: "OK")
+        u3 = create(:user, state: "IA")
         @m1, @m2, @m3, @m4, @m5, @m6, @m7 = create_list(:merchant, 7)
         i1 = create(:item, merchant_id: @m1.id)
         i2 = create(:item, merchant_id: @m2.id)
@@ -34,13 +37,13 @@ RSpec.describe "merchant index workflow", type: :feature do
         i5 = create(:item, merchant_id: @m5.id)
         i6 = create(:item, merchant_id: @m6.id)
         i7 = create(:item, merchant_id: @m7.id)
-        o1 = create(:completed_order)
-        o2 = create(:cancelled_order)
-        o3 = create(:completed_order)
-        o4 = create(:completed_order)
-        o5 = create(:cancelled_order)
-        o6 = create(:completed_order)
-        o7 = create(:completed_order)
+        o1 = create(:completed_order, user: u1)
+        o2 = create(:cancelled_order, user: u1)
+        o3 = create(:completed_order, user: u3)
+        o4 = create(:completed_order, user: u2)
+        o5 = create(:cancelled_order, user: u2)
+        o6 = create(:completed_order, user: u3)
+        o7 = create(:completed_order, user: u3)
         oi1 = create(:fulfilled_order_item, item: i1, order: o1, created_at: 1.days.ago)
         oi2 = create(:fulfilled_order_item, item: i2, order: o2, created_at: 7.days.ago)
         oi3 = create(:fulfilled_order_item, item: i3, order: o3, created_at: 6.days.ago)
@@ -80,8 +83,14 @@ RSpec.describe "merchant index workflow", type: :feature do
         end
       end
 
-      xit "top 3 states where any orders were shipped, and count of orders" do
+      it "top 3 states where any orders were shipped, and count of orders" do
+        visit merchants_path
 
+        within("#top-states-by-order") do
+          expect(page).to have_content("CO: 3 orders")
+          expect(page).to have_content("IA: 2 orders")
+          expect(page).to have_content("OK: 1 order")
+        end
       end
 
       xit "top 3 cities where any orders were shipped, and count of orders" do

@@ -33,14 +33,35 @@ class Admin::UsersController < Admin::BaseController
     end
   end
 
+<<<<<<< HEAD
   def set_active_flag(user, active_flag)
     user.active = active_flag
     user.save
+=======
+    def disable
+    user = User.find(params[:id])
+    set_active_flag(user, false)
+    redirect_to admin_users_path
+  end
+
+  def enable
+    user = User.find(params[:id])
+    set_active_flag(user, true)
+    redirect_to admin_users_path
+>>>>>>> 2167704... closes #60, fixes broken merge conflicted code
   end
 
   private
 
   def user_params
     params.require(:user).permit(:name, :email, :address, :city, :state, :zip, :password)
+<<<<<<< HEAD
+=======
+  end
+
+  def set_active_flag(user, active_flag)
+    user.active = active_flag
+    user.save
+>>>>>>> 2167704... closes #60, fixes broken merge conflicted code
   end
 end

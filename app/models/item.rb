@@ -25,4 +25,20 @@ class Item < ApplicationRecord
       'n/a'
     end
   end
+
+  def self.item_popularity(limit, order)
+    Item.joins(:order_items)
+      .select('items.*, sum(quantity) as total_ordered')
+      .group(:id)
+      .order("total_ordered #{order}")
+      .limit(limit)
+  end
+
+  def self.popular_items(limit)
+    item_popularity(limit, :desc)
+  end
+
+  def self.unpopular_items(limit)
+    item_popularity(limit, :asc)
+  end
 end

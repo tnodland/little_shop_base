@@ -9,3 +9,7 @@
 <p>Zip: <%= current_user.zip %></p>
 
 <%= link_to "Edit", edit_profile_path %>
+
+<% if current_user.orders %>
+<%= link_to 'See all Orders', profile_orders_path %>
+<% end %>

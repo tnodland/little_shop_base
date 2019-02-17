@@ -29,7 +29,15 @@
       <h5 class="card-title">Top States by Order</h5>
       <ul>
         <% @top_states_by_order_count.each do |result| %>
-          <li><%= result.state %>: <%= result.order_count %> orders </li>
+          <li><%= result.state %>: <%= pluralize(result.order_count, "order") %></li>
+        <% end %>
+      </ul>
+    <% end %>
+    <%= tag.section id: "top-cities-by-order", class: "card-body float-left m-2" do %>
+      <h5 class="card-title">Top Cities by Order</h5>
+      <ul>
+        <% @top_cities_by_order_count.each do |result| %>
+          <li><%= result.city %>, <%= result.state %>: <%= pluralize(result.order_count, "order") %> </li>
         <% end %>
       </ul>
     <% end %>

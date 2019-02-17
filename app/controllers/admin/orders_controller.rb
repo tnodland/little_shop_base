@@ -4,7 +4,6 @@ class Admin::OrdersController < Admin::BaseController
     @orders = user.orders
     render :'/profile/orders/index'
   end
-<<<<<<< HEAD
 
   def show
     @user = User.find(params[:user_id])
@@ -16,6 +15,4 @@ class Admin::OrdersController < Admin::BaseController
       render '/profile/orders/show'
     end
   end
-=======
->>>>>>> 79e6da4... closes #52
 end

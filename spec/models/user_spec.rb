@@ -29,12 +29,12 @@ RSpec.describe User, type: :model do
 
     describe "statistics" do
       before :each do
-        u1 = create(:user, state: "CO")
-        u2 = create(:user, state: "OK")
-        u3 = create(:user, state: "IA")
-        u4 = create(:user, state: "IA")
-        u5 = create(:user, state: "IA")
-        u6 = create(:user, state: "IA")
+        u1 = create(:user, state: "CO", city: "Fairfield")
+        u2 = create(:user, state: "OK", city: "OKC")
+        u3 = create(:user, state: "IA", city: "Fairfield")
+        u4 = create(:user, state: "IA", city: "Des Moines")
+        u5 = create(:user, state: "IA", city: "Des Moines")
+        u6 = create(:user, state: "IA", city: "Des Moines")
         @m1, @m2, @m3, @m4, @m5, @m6, @m7 = create_list(:merchant, 7)
         i1 = create(:item, merchant_id: @m1.id)
         i2 = create(:item, merchant_id: @m2.id)
@@ -44,12 +44,12 @@ RSpec.describe User, type: :model do
         i6 = create(:item, merchant_id: @m6.id)
         i7 = create(:item, merchant_id: @m7.id)
         o1 = create(:completed_order, user: u1)
-        o2 = create(:cancelled_order, user: u1)
+        o2 = create(:completed_order, user: u2)
         o3 = create(:completed_order, user: u3)
-        o4 = create(:completed_order, user: u2)
-        o5 = create(:cancelled_order, user: u2)
-        o6 = create(:completed_order, user: u3)
-        o7 = create(:completed_order, user: u3)
+        o4 = create(:completed_order, user: u1)
+        o5 = create(:cancelled_order, user: u5)
+        o6 = create(:completed_order, user: u6)
+        o7 = create(:completed_order, user: u6)
         oi1 = create(:fulfilled_order_item, item: i1, order: o1, created_at: 1.days.ago)
         oi2 = create(:fulfilled_order_item, item: i2, order: o2, created_at: 7.days.ago)
         oi3 = create(:fulfilled_order_item, item: i3, order: o3, created_at: 6.days.ago)
@@ -59,7 +59,7 @@ RSpec.describe User, type: :model do
         oi7 = create(:fulfilled_order_item, item: i7, order: o7, created_at: 2.days.ago)
       end
       it ".merchants_sorted_by_revenue" do
-        expect(User.merchants_sorted_by_revenue.to_a).to eq([@m7, @m6, @m3, @m1])
+        expect(User.merchants_sorted_by_revenue.to_a).to eq([@m7, @m6, @m3, @m2, @m1])
       end
 
       it ".top_merchants_by_revenue()" do
@@ -67,7 +67,7 @@ RSpec.describe User, type: :model do
       end
 
       it ".merchants_sorted_by_fulfillment_time" do
-        expect(User.merchants_sorted_by_fulfillment_time.to_a).to eq([@m1, @m7, @m6, @m3])
+        expect(User.merchants_sorted_by_fulfillment_time.to_a).to eq([@m1, @m7, @m6, @m3, @m2])
       end
 
       it ".top_merchants_by_fulfillment_time" do
@@ -75,17 +75,28 @@ RSpec.describe User, type: :model do
       end
 
       it ".bottom_merchants_by_fulfillment_time" do
-        expect(User.bottom_merchants_by_fulfillment_time(3)).to eq([@m3, @m6, @m7])
+        expect(User.bottom_merchants_by_fulfillment_time(3)).to eq([@m2, @m3, @m6])
       end
 
       it ".top_user_states_by_order_count" do
-        expect(User.top_user_states_by_order_count(3).first.state).to eq("IA")
-        expect(User.top_user_states_by_order_count(2).last.state).to eq("CO")
+        expect(User.top_user_states_by_order_count(3)[0].state).to eq("IA")
+        expect(User.top_user_states_by_order_count(3)[0].order_count).to eq(3)
+        expect(User.top_user_states_by_order_count(3)[1].state).to eq("CO")
+        expect(User.top_user_states_by_order_count(3)[1].order_count).to eq(2)
+        expect(User.top_user_states_by_order_count(3)[2].state).to eq("OK")
+        expect(User.top_user_states_by_order_count(3)[2].order_count).to eq(1)
       end
 
-      it ".top_user_city_by_order_count" do
-        expect(User.top_user_states_by_order_count(3).first.state).to eq("Des Moines, IA")
-        expect(User.top_user_states_by_order_count(2).last.state).to eq("Fairfield, CO")
+      it ".top_user_cities_by_order_count" do
+        expect(User.top_user_cities_by_order_count(3)[0].state).to eq("IA")
+        expect(User.top_user_cities_by_order_count(3)[0].city).to eq("Des Moines")
+        expect(User.top_user_cities_by_order_count(3)[0].order_count).to eq(2)
+        expect(User.top_user_cities_by_order_count(3)[1].state).to eq("CO")
+        expect(User.top_user_cities_by_order_count(3)[1].city).to eq("Fairfield")
+        expect(User.top_user_cities_by_order_count(3)[1].order_count).to eq(2)
+        expect(User.top_user_cities_by_order_count(3)[2].state).to eq("IA")
+        expect(User.top_user_cities_by_order_count(3)[2].city).to eq("Fairfield")
+        expect(User.top_user_cities_by_order_count(3)[2].order_count).to eq(1)
       end
     end
   end

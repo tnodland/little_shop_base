@@ -11,7 +11,7 @@ RSpec.describe Order, type: :model do
     it { should have_many(:items).through(:order_items) }
   end
 
-  describe 'Class Methos' do
+  describe 'Class Methods' do
     before :each do
       @o1 = create(:completed_order)
       @o2 = create(:completed_order)
@@ -45,7 +45,7 @@ RSpec.describe Order, type: :model do
       expect(Order.top_orders_by_items_shipped(3)[2].quantity).to eq(6)
     end
   end
-  
+
   describe 'instance methods' do
     before :each do
       user = create(:user)

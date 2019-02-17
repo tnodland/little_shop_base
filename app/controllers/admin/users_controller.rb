@@ -21,13 +21,7 @@ class Admin::UsersController < Admin::BaseController
     end
   end
 
-  private
-
-  def user_params
-    params.require(:user).permit(:name, :email, :address, :city, :state, :zip, :password)
-  end
-
-  def disable
+    def disable
     user = User.find(params[:id])
     set_active_flag(user, false)
     redirect_to admin_users_path
@@ -40,6 +34,10 @@ class Admin::UsersController < Admin::BaseController
   end
 
   private
+
+  def user_params
+    params.require(:user).permit(:name, :email, :address, :city, :state, :zip, :password)
+  end
 
   def set_active_flag(user, active_flag)
     user.active = active_flag

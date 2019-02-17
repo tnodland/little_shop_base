@@ -31,9 +31,18 @@ class User < ApplicationRecord
   def self.top_user_states_by_order_count(limit)
     self.joins(:orders)
         .where('orders.status = 1')
-        .group(:state, :id)
-        .select('users.*, count(orders.id) AS all_orders')
-        .order('all_orders DESC')
+        .group(:state)
+        .select('users.state, count(orders.id) AS order_count')
+        .order('order_count DESC')
+        .limit(limit)
+  end
+
+  def self.top_user_cities_by_order_count(limit)
+    self.joins(:orders)
+        .where('orders.status = 1')
+        .group(:city, :state)
+        .select('users.city, users.state, count(orders.id) AS order_count')
+        .order('order_count DESC')
         .limit(limit)
   end
 

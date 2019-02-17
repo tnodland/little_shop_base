@@ -28,8 +28,8 @@
     <%= tag.section id: "top-states-by-order", class: "card-body float-left m-2" do %>
       <h5 class="card-title">Top States by Order</h5>
       <ul>
-        <% @top_states_by_order_count.each do |merchant| %>
-          <li><%= link_to merchant.name, merchant_path(merchant) %>: <%= merchant.fulfillment_time %></li>
+        <% @top_states_by_order_count.each do |result| %>
+          <li><%= result.state %>: <%= result.order_count %> orders </li>
         <% end %>
       </ul>
     <% end %>

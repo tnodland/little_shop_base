@@ -2,7 +2,8 @@ class Profile::OrdersController < ApplicationController
   before_action :user_or_admin
 
   def index
-    @orders = Order.all
+    @user = current_user
+    @orders = Order.where(user: @user)
   end
 
   def create

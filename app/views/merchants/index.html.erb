@@ -37,7 +37,15 @@
       <h5 class="card-title">Top Cities by Order</h5>
       <ul>
         <% @top_cities_by_order_count.each do |result| %>
-          <li><%= result.city %>, <%= result.state %>: <%= pluralize(result.order_count, "order") %> </li>
+          <li><%= result.city %>, <%= result.state %>: <%= pluralize(result.order_count, "order") %></li>
+        <% end %>
+      </ul>
+    <% end %>
+    <%= tag.section id: "top-orders-by-items-shipped", class: "card-body float-left m-2" do %>
+      <h5 class="card-title">Top Orders by Items Shipped</h5>
+      <ul>
+        <% @top_orders_by_items_shipped.each do |result| %>
+          <li>Order <%= result.id %>: <%= pluralize(result.quantity, "item") %></li>
         <% end %>
       </ul>
     <% end %>

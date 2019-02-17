@@ -40,20 +40,20 @@ RSpec.describe "merchant index workflow", type: :feature do
         i5 = create(:item, merchant_id: @m5.id)
         i6 = create(:item, merchant_id: @m6.id)
         i7 = create(:item, merchant_id: @m7.id)
-        o1 = create(:completed_order, user: u1)
-        o2 = create(:completed_order, user: u2)
-        o3 = create(:completed_order, user: u3)
-        o4 = create(:completed_order, user: u1)
-        o5 = create(:cancelled_order, user: u5)
-        o6 = create(:completed_order, user: u6)
-        o7 = create(:completed_order, user: u6)
-        oi1 = create(:fulfilled_order_item, item: i1, order: o1, created_at: 1.days.ago)
-        oi2 = create(:fulfilled_order_item, item: i2, order: o2, created_at: 7.days.ago)
-        oi3 = create(:fulfilled_order_item, item: i3, order: o3, created_at: 6.days.ago)
-        oi4 = create(:order_item, item: i4, order: o4, created_at: 4.days.ago)
-        oi5 = create(:order_item, item: i5, order: o5, created_at: 5.days.ago)
-        oi6 = create(:fulfilled_order_item, item: i6, order: o6, created_at: 3.days.ago)
-        oi7 = create(:fulfilled_order_item, item: i7, order: o7, created_at: 2.days.ago)
+        @o1 = create(:completed_order, user: u1)
+        @o2 = create(:completed_order, user: u2)
+        @o3 = create(:completed_order, user: u3)
+        @o4 = create(:completed_order, user: u1)
+        @o5 = create(:cancelled_order, user: u5)
+        @o6 = create(:completed_order, user: u6)
+        @o7 = create(:completed_order, user: u6)
+        oi1 = create(:fulfilled_order_item, item: i1, order: @o1, created_at: 1.days.ago)
+        oi2 = create(:fulfilled_order_item, item: i2, order: @o2, created_at: 7.days.ago)
+        oi3 = create(:fulfilled_order_item, item: i3, order: @o3, created_at: 6.days.ago)
+        oi4 = create(:order_item, item: i4, order: @o4, created_at: 4.days.ago)
+        oi5 = create(:order_item, item: i5, order: @o5, created_at: 5.days.ago)
+        oi6 = create(:fulfilled_order_item, item: i6, order: @o6, created_at: 3.days.ago)
+        oi7 = create(:fulfilled_order_item, item: i7, order: @o7, created_at: 2.days.ago)
       end
 
       it "top 3 merchants by price and quantity, with their revenue" do
@@ -108,8 +108,14 @@ RSpec.describe "merchant index workflow", type: :feature do
         end
       end
 
-      xit "top 3 orders by quantity of items shipped, plus their quantities" do
+      it "top 3 orders by quantity of items shipped, plus their quantities" do
+        visit merchants_path
 
+        within("#top-orders-by-items-shipped") do
+          expect(page).to have_content("Order #{@o7.id}: 16 items")
+          expect(page).to have_content("Order #{@o6.id}: 14 items")
+          expect(page).to have_content("Order #{@o3.id}: 8 items")
+        end
       end
     end
   end

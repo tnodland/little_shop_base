@@ -13,4 +13,12 @@ RSpec.describe OrderItem, type: :model do
     it { should belong_to :order }
     it { should belong_to :item }
   end
+
+  describe 'instance methods' do
+    it '.subtotal' do
+      oi = create(:order_item, quantity: 5, price: 3)
+
+      expect(oi.subtotal).to eq(15)
+    end
+  end
 end

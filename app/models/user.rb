@@ -47,25 +47,24 @@ class User < ApplicationRecord
   end
 
   def self.merchants_sorted_by_revenue
-    # play around with hash notation
-    self.joins(:items)
-        .joins('join order_items on items.id = order_items.item_id')
-        .joins('join orders on orders.id = order_items.order_id')
-        .where('orders.status = 1')
-        .where('order_items.fulfilled = true')
-        .group(:id)
-        .select('users.*, sum(order_items.quantity * order_items.price) AS total')
-        .order("total DESC")
+    merchant_sort_base.select('users.*, sum(order_items.quantity * order_items.price) AS total')
+                      .order("total DESC")
   end
 
   def self.merchants_sorted_by_fulfillment_time(order = "ASC")
-    self.joins(:items)
-        .joins('join order_items on items.id = order_items.item_id')
-        .joins('join orders on orders.id = order_items.order_id')
-        .where('orders.status = 1')
-        .where('order_items.fulfilled = true')
-        .group(:id)
-        .select('users.*, avg(order_items.updated_at - order_items.created_at) AS fulfillment_time')
-        .order("fulfillment_time #{order}")
+    merchant_sort_base.select('users.*, avg(order_items.updated_at - order_items.created_at) AS fulfillment_time')
+                      .order("fulfillment_time #{order}")
   end
+
+  private
+
+    def self.merchant_sort_base
+      # play around with hash notation
+      self.joins(:items)
+          .joins('join order_items on items.id = order_items.item_id')
+          .joins('join orders on orders.id = order_items.order_id')
+          .where('orders.status = 1')
+          .where('order_items.fulfilled = true')
+          .group(:id)
+    end
 end

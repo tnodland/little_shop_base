@@ -20,4 +20,8 @@ class Profile::OrdersController < ApplicationController
     flash[:success] = 'You have successfully checked out!'
     redirect_to profile_orders_path
   end
+
+  def show
+    @order = Order.find(params[:id])
+  end
 end

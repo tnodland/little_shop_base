@@ -93,6 +93,7 @@ RSpec.describe "merchant index workflow", type: :feature do
           expect(page).to have_content("IA: 3 orders")
           expect(page).to have_content("CO: 2 orders")
           expect(page).to have_content("OK: 1 order")
+          expect(page).to_not have_content("OK: 1 orders")
         end
       end
 
@@ -103,6 +104,7 @@ RSpec.describe "merchant index workflow", type: :feature do
           expect(page).to have_content("Des Moines, IA: 2 orders")
           expect(page).to have_content("Fairfield, CO: 2 orders")
           expect(page).to have_content("Fairfield, IA: 1 order")
+          expect(page).to_not have_content("Fairfield, IA: 1 orders")
         end
       end
 

@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   resources :items, only: [:index, :show]
 
   get '/dashboard', to: 'merchants#show', as: :dashboard
-  resources :merchants, only: [:index]
+  resources :merchants, only: [:index, :show]
 
   namespace :admin do
     put '/users/:id/enable', to: 'users#enable', as: :enable_user

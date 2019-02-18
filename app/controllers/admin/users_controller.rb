@@ -5,7 +5,11 @@ class Admin::UsersController < Admin::BaseController
 
   def show
     @user = User.find(params[:id])
-    render :'/users/show'
+    if @user.merchant?
+      redirect_to admin_merchant_path(@user)
+    else
+      render :'/users/show'
+    end
   end
 
   def disable

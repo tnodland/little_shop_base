@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'user profile' do
+RSpec.describe 'user profile', type: :feature do
   before :each do
     @user = create(:user)
   end
@@ -19,6 +19,20 @@ RSpec.describe 'user profile' do
       expect(page).to have_content("State: #{@user.state}")
       expect(page).to have_content("Zip: #{@user.zip}")
       expect(page).to have_link('Edit')
+    end
+    describe 'user profile may or may not show a link to see orders' do
+      it 'hides the link if user has no orders' do
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+        expect(page).to_not have_link('See all Orders')
+      end
+      it 'shows the link if user has orders' do
+        create(:order, user: @user)
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
+        visit profile_path
+
+        expect(page).to have_link('See all Orders')
+      end
     end
   end
 

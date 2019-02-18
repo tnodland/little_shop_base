@@ -19,4 +19,13 @@ class Order < ApplicationRecord
         .select('orders.id, sum(order_items.quantity) AS quantity')
         .order('quantity DESC')
   end
+  
+  def total_item_count
+    order_items.sum(:quantity)
+  end
+
+  def total_cost
+    oi = order_items.pluck("sum(quantity*price)")
+    oi.sum
+  end
 end

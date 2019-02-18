@@ -34,7 +34,6 @@ Rails.application.routes.draw do
     resources :users, only: [:index, :show, :edit, :update] do
       resources :orders, only: [:index, :show]
     end
-
     resources :merchants, only: [:show]
     resources :dashboard, only: [:index]
   end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'admin user show workflow' do
+RSpec.describe 'admin user show workflow', type: :feature do
   before :each do
     @admin = create(:admin)
     @user = create(:user)

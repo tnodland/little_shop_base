@@ -34,19 +34,21 @@ RSpec.describe 'User Order workflow', type: :feature do
       visit profile_order_path(@order_1)
       @am_user = true
     end
-    # scenario 'as an admin' do
-      # login_as(@admin)
-      # visit admin_user_order_path(@order_2)
-      # expect(page).to_not have_button('Cancel Order')
+    scenario 'as an admin' do
+      login_as(@admin)
+      visit admin_user_order_path(@user, @order_2)
+      expect(page).to_not have_button('Cancel Order')
 
-      # visit admin_user_order_path(@order_1)
-    #   @am_user = false
-    # end
+      visit admin_user_order_path(@user, @order_1)
+      @am_user = false
+    end
     after :each do
       click_button('Cancel Order')
 
       if @am_user
         expect(current_path).to eq(profile_orders_path)
+      else
+        expect(current_path).to eq(admin_user_orders_path(@user))
       end
 
       within "#order-#{@order_1.id}" do
@@ -64,5 +66,13 @@ RSpec.describe 'User Order workflow', type: :feature do
       visit item_path(@item_2)
       expect(page).to have_content("In stock: #{@inventory_level + @purchased_amount}")
     end
+  end
+
+  scenario 'admins get a 404 if they try to access an order for a wrong user' do
+    @user_2 = create(:user)
+    login_as(@admin)
+
+    visit admin_user_order_path(@user_2, @order_2)
+    expect(page.status_code).to eq(404)
   end
 end

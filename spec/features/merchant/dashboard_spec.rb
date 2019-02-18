@@ -56,7 +56,6 @@ RSpec.describe 'merchant dashboard' do
     end
 
     it 'shows pending order information' do
-      save_and_open_page
       within("#order-#{@o1.id}") do
         expect(page).to have_link(@o1.id)
         expect(page).to have_content(@o1.created_at)

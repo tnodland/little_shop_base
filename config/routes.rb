@@ -31,10 +31,12 @@ Rails.application.routes.draw do
   namespace :admin do
     put '/users/:id/enable', to: 'users#enable', as: :enable_user
     put '/users/:id/disable', to: 'users#disable', as: :disable_user
+    put '/users/:id/upgrade', to: 'users#upgrade', as: :upgrade_user
     resources :users, only: [:index, :show, :edit, :update] do
       resources :orders, only: [:index, :show]
     end
 
+    put '/merchants/:id/downgrade', to: 'merchants#downgrade', as: :downgrade_merchant
     resources :merchants, only: [:show]
     resources :dashboard, only: [:index]
   end

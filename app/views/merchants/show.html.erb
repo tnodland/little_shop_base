@@ -7,3 +7,9 @@
 <p>City: <%= @merchant.city %></p>
 <p>State: <%= @merchant.state %></p>
 <p>Zip: <%= @merchant.zip %></p>
+
+<% if current_admin? %>
+<p>
+  <%= button_to 'Downgrade to User', admin_downgrade_merchant_path(@merchant), method: :put %>
+</p>
+<% end %>

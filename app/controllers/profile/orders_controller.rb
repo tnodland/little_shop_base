@@ -39,6 +39,10 @@ class Profile::OrdersController < ApplicationController
     @order.status = :cancelled
     @order.save
 
-    redirect_to profile_orders_path
+    if current_reguser?
+      redirect_to profile_orders_path
+    elsif current_admin?
+      redirect_to admin_user_orders_path(@order.user)
+    end
   end
 end

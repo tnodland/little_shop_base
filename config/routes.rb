@@ -32,8 +32,9 @@ Rails.application.routes.draw do
     put '/users/:id/enable', to: 'users#enable', as: :enable_user
     put '/users/:id/disable', to: 'users#disable', as: :disable_user
     resources :users, only: [:index, :show, :edit, :update] do
-      resources :orders, only: [:index]
+      resources :orders, only: [:index, :show]
     end
+
     resources :merchants, only: [:show]
     resources :dashboard, only: [:index]
   end

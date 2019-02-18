@@ -36,7 +36,7 @@ RSpec.describe 'merchant dashboard' do
     end
   end
 
-  describe 'merchant user visits their profile' do
+  describe 'merchant user with orders visits their profile' do
     before :each do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
 
@@ -62,6 +62,17 @@ RSpec.describe 'merchant dashboard' do
         expect(page).to have_content(@o1.total_quantity_for_merchant(@merchant.id))
         expect(page).to have_content(@o1.total_price_for_merchant(@merchant.id))
       end
+      within("#order-#{@o2.id}") do
+        expect(page).to have_link(@o2.id)
+        expect(page).to have_content(@o2.created_at)
+        expect(page).to have_content(@o2.total_quantity_for_merchant(@merchant.id))
+        expect(page).to have_content(@o2.total_price_for_merchant(@merchant.id))
+      end
+    end
+
+    it 'does not show non-pending orders' do
+      expect(page).to_not have_css("#order-#{@o3.id}")
+      expect(page).to_not have_css("#order-#{@o4.id}")
     end
   end
 end

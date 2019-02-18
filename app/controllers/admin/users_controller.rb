@@ -5,12 +5,13 @@ class Admin::UsersController < Admin::BaseController
 
   def show
     @user = User.find(params[:id])
+    render :'/users/show'
   end
 
   def edit
     @user = User.find(params[:id])
     @form_path = [:admin, @user]
-    render :'users/edit'
+    render :'/users/edit'
   end
 
   def update

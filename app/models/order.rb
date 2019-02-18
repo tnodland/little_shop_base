@@ -49,4 +49,25 @@ class Order < ApplicationRecord
         .group(:id)
         .order('quantity desc')
   end
+
+  def total_quantity_for_merchant(merchant_id)
+    items.where('merchant_id = ?', merchant_id)
+         .joins(:order_items).select('items.id, order_items.quantity')
+         .distinct
+         .sum('order_items.quantity')
+  end
+
+  def total_price_for_merchant(merchant_id)
+    items.where('merchant_id = ?', merchant_id)
+         .joins(:order_items).select('items.id, order_items.quantity, order_items.price')
+         .distinct
+         .sum('order_items.quantity*order_items.price')
+  end
+
+  def self.pending_orders_for_merchant(merchant_id)
+    self.where(status: 0)
+        .joins(:items)
+        .where('items.merchant_id = ?', merchant_id)
+        .distinct
+  end
 end

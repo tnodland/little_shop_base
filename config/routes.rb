@@ -28,6 +28,10 @@ Rails.application.routes.draw do
   get '/dashboard', to: 'merchants#show', as: :dashboard
   resources :merchants, only: [:index, :show]
 
+  scope :dashboard, module: :merchant, as: :merchant do
+    resources :orders, only: [:show]
+  end
+
   namespace :admin do
     put '/users/:id/enable', to: 'users#enable', as: :enable_user
     put '/users/:id/disable', to: 'users#disable', as: :disable_user

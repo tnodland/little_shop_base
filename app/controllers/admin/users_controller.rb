@@ -5,12 +5,17 @@ class Admin::UsersController < Admin::BaseController
 
   def show
     @user = User.find(params[:id])
+    if @user.merchant?
+      redirect_to admin_merchant_path(@user)
+    else
+      render :'/users/show'
+    end
   end
 
   def edit
     @user = User.find(params[:id])
     @form_path = [:admin, @user]
-    render :'users/edit'
+    render :'/users/edit'
   end
 
   def update

@@ -31,8 +31,9 @@ Rails.application.routes.draw do
   namespace :admin do
     put '/users/:id/enable', to: 'users#enable', as: :enable_user
     put '/users/:id/disable', to: 'users#disable', as: :disable_user
-    resources :users, only: [:index, :show, :edit, :update]
-
+    resources :users, only: [:index, :show, :edit, :update] do
+      resources :orders, only: [:index]
+    end
     resources :merchants, only: [:show]
     resources :dashboard, only: [:index]
   end

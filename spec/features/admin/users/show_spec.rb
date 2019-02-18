@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'admin user show workflow' do
+RSpec.describe 'admin user show workflow', type: :feature do
   before :each do
     @admin = create(:admin)
     @user = create(:user)
@@ -17,6 +17,8 @@ RSpec.describe 'admin user show workflow' do
     expect(page).to have_content("City: #{@user.city}")
     expect(page).to have_content("State: #{@user.state}")
     expect(page).to have_content("Zip: #{@user.zip}")
+
+    expect(page).to_not have_link('See all Orders')
   end
 
   describe "admin edits user" do
@@ -45,7 +47,7 @@ RSpec.describe 'admin user show workflow' do
       fill_in :user_password_confirmation, with: @updated_password
 
       click_button 'Update User'
-      
+
       updated_user = User.find_by(email: @updated_email)
 
       expect(current_path).to eq(admin_user_path(@user))

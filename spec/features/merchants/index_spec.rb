@@ -27,8 +27,8 @@ RSpec.describe "merchant index workflow", type: :feature do
     describe "shows merchant statistics" do
       before :each do
         u1 = create(:user, state: "CO", city: "Fairfield")
-        u2 = create(:user, state: "OK", city: "OKC")
         u3 = create(:user, state: "IA", city: "Fairfield")
+        u2 = create(:user, state: "OK", city: "OKC")
         u4 = create(:user, state: "IA", city: "Des Moines")
         u5 = create(:user, state: "IA", city: "Des Moines")
         u6 = create(:user, state: "IA", city: "Des Moines")
@@ -47,13 +47,13 @@ RSpec.describe "merchant index workflow", type: :feature do
         @o5 = create(:cancelled_order, user: u5)
         @o6 = create(:completed_order, user: u6)
         @o7 = create(:completed_order, user: u6)
-        oi1 = create(:fulfilled_order_item, item: i1, order: @o1, created_at: 1.days.ago)
-        oi2 = create(:fulfilled_order_item, item: i2, order: @o2, created_at: 7.days.ago)
+        oi1 = create(:fulfilled_order_item, item: i1, order: @o1, created_at: 5.minutes.ago)
+        oi2 = create(:fulfilled_order_item, item: i2, order: @o2, created_at: 53.5.hours.ago)
         oi3 = create(:fulfilled_order_item, item: i3, order: @o3, created_at: 6.days.ago)
         oi4 = create(:order_item, item: i4, order: @o4, created_at: 4.days.ago)
         oi5 = create(:order_item, item: i5, order: @o5, created_at: 5.days.ago)
         oi6 = create(:fulfilled_order_item, item: i6, order: @o6, created_at: 3.days.ago)
-        oi7 = create(:fulfilled_order_item, item: i7, order: @o7, created_at: 2.days.ago)
+        oi7 = create(:fulfilled_order_item, item: i7, order: @o7, created_at: 2.hours.ago)
       end
 
       it "top 3 merchants by price and quantity, with their revenue" do
@@ -70,9 +70,9 @@ RSpec.describe "merchant index workflow", type: :feature do
         visit merchants_path
 
         within("#top-three-merchants-fulfillment") do
-          expect(page).to have_content("#{@m1.name}: 1 day")
-          expect(page).to have_content("#{@m7.name}: 2 days")
-          expect(page).to have_content("#{@m6.name}: 3 days")
+          expect(page).to have_content("#{@m1.name}: 00 hours 05 minutes")
+          expect(page).to have_content("#{@m7.name}: 02 hours 00 minutes")
+          expect(page).to have_content("#{@m2.name}: 2 days 05 hours 30 minutes")
         end
       end
 
@@ -80,9 +80,9 @@ RSpec.describe "merchant index workflow", type: :feature do
         visit merchants_path
 
         within("#bottom-three-merchants-fulfillment") do
-          expect(page).to have_content("#{@m2.name}: 7 days")
-          expect(page).to have_content("#{@m3.name}: 6 days")
-          expect(page).to have_content("#{@m6.name}: 3 days")
+          expect(page).to have_content("#{@m3.name}: 6 days 00 hours 00 minutes")
+          expect(page).to have_content("#{@m6.name}: 3 days 00 hours 00 minutes")
+          expect(page).to have_content("#{@m2.name}: 2 days 05 hours 30 minutes")
         end
       end
 

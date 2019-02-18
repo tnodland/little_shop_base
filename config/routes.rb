@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     get '/edit', to: 'users#edit', as: :edit_profile
   end
   namespace :profile do
-    resources :orders, only: [:index, :create, :show]
+    resources :orders, only: [:index, :create, :show, :destroy]
   end
 
   resources :users, only: [:create, :update]
@@ -30,17 +30,19 @@ Rails.application.routes.draw do
     resources :items, only: [:index]
   end
 
-  resources :merchants, only: [:index]
+  resources :merchants, only: [:index, :show]
 
   namespace :admin do
     put '/users/:id/enable', to: 'users#enable', as: :enable_user
     put '/users/:id/disable', to: 'users#disable', as: :disable_user
     resources :users, only: [:index, :show, :edit, :update] do
-      resources :orders, only: [:index]
+      resources :orders, only: [:index, :show]
     end
+
     resources :merchants, only: [:show] do
       resources :items, only: [:index]
     end
+
     resources :dashboard, only: [:index]
   end
 end

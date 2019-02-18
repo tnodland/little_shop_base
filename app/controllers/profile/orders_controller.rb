@@ -24,4 +24,25 @@ class Profile::OrdersController < ApplicationController
   def show
     @order = Order.find(params[:id])
   end
+
+  def destroy
+    @order = Order.find(params[:id])
+
+    @order.order_items.where(fulfilled: true).each do |oi|
+      item = Item.find(oi.item_id)
+      item.inventory += oi.quantity
+      item.save
+      oi.fulfilled = false
+      oi.save
+    end
+
+    @order.status = :cancelled
+    @order.save
+
+    if current_reguser?
+      redirect_to profile_orders_path
+    elsif current_admin?
+      redirect_to admin_user_orders_path(@order.user)
+    end
+  end
 end

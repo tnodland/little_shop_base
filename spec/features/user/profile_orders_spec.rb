@@ -36,6 +36,13 @@ RSpec.describe 'Profile Orders page', type: :feature do
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
         visit profile_orders_path
       end
+      scenario 'when logged in as admin' do
+        @user.reload
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
+        visit admin_user_path(@user)
+        click_link 'See all Orders'
+        expect(current_path).to eq(admin_user_orders_path(@user))
+      end
       after :each do
         expect(page).to_not have_content('You have no orders yet')
 

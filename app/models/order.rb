@@ -34,11 +34,10 @@ class Order < ApplicationRecord
   end
 
   def self.sorted_by_items_shipped
-    self.where(status: 1)
-        .joins(:order_items)
-        .where('order_items.fulfilled = true')
+    self.joins(:order_items)
+        .select('orders.*, sum(order_items.quantity) as quantity')
+        .where(status: 1, order_items: {fulfilled: true})
         .group(:id)
-        .select('orders.id, sum(order_items.quantity) AS quantity')
-        .order('quantity DESC')
+        .order('quantity desc')
   end
 end

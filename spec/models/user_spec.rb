@@ -67,7 +67,7 @@ RSpec.describe User, type: :model do
       end
 
       it ".merchants_sorted_by_fulfillment_time" do
-        expect(User.merchants_sorted_by_fulfillment_time.to_a).to eq([@m1, @m7, @m6, @m3, @m2])
+        expect(User.merchants_sorted_by_fulfillment_time(10)).to eq([@m1, @m7, @m6, @m3, @m2])
       end
 
       it ".top_merchants_by_fulfillment_time" do
@@ -88,11 +88,11 @@ RSpec.describe User, type: :model do
       end
 
       it ".top_user_cities_by_order_count" do
-        expect(User.top_user_cities_by_order_count(3)[0].state).to eq("IA")
-        expect(User.top_user_cities_by_order_count(3)[0].city).to eq("Des Moines")
+        expect(User.top_user_cities_by_order_count(3)[0].state).to eq("CO")
+        expect(User.top_user_cities_by_order_count(3)[0].city).to eq("Fairfield")
         expect(User.top_user_cities_by_order_count(3)[0].order_count).to eq(2)
-        expect(User.top_user_cities_by_order_count(3)[1].state).to eq("CO")
-        expect(User.top_user_cities_by_order_count(3)[1].city).to eq("Fairfield")
+        expect(User.top_user_cities_by_order_count(3)[1].state).to eq("IA")
+        expect(User.top_user_cities_by_order_count(3)[1].city).to eq("Des Moines")
         expect(User.top_user_cities_by_order_count(3)[1].order_count).to eq(2)
         expect(User.top_user_cities_by_order_count(3)[2].state).to eq("IA")
         expect(User.top_user_cities_by_order_count(3)[2].city).to eq("Fairfield")

@@ -68,6 +68,11 @@ RSpec.describe 'Profile Orders page', type: :feature do
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
         visit profile_order_path(@order)
       end
+      scenario 'when logged in as admin' do
+        @user.reload
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
+        visit admin_user_order_path(@user, @order)
+      end
       after :each do
         expect(page).to have_content("Order ID #{@order.id}")
         expect(page).to have_content("Created: #{@order.created_at}")

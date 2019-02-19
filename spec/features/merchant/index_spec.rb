@@ -17,7 +17,6 @@ RSpec.describe "merchant index workflow", type: :feature do
         @am_admin = true
       end
       after :each do
-
         visit merchants_path
 
         within("#merchant-#{@merchant_1.id}") do
@@ -45,6 +44,48 @@ RSpec.describe "merchant index workflow", type: :feature do
         else
           expect(page).to_not have_content(@inactive_merchant.name)
           expect(page).to_not have_content("#{@inactive_merchant.city}, #{@inactive_merchant.state}")
+        end
+      end
+    end
+
+    describe 'admins can enable/disable merchants' do
+      before :each do
+        @merchant_1 = create(:merchant)
+        @admin = create(:admin)
+      end
+      it 'allows an admin to disable a merchant' do
+        login_as(@admin)
+
+        visit merchants_path
+
+        within("#merchant-#{@merchant_1.id}") do
+          click_button('Disable Merchant')
+        end
+        expect(current_path).to eq(merchants_path)
+
+        visit logout_path
+        login_as(@merchant_1)
+        expect(current_path).to eq(login_path)
+        expect(page).to have_content('Your account is inactive, contact an admin for help')
+
+        visit logout_path
+        login_as(@admin)
+        visit merchants_path
+
+        within("#merchant-#{@merchant_1.id}") do
+          click_button('Enable Merchant')
+        end
+
+        visit logout_path
+        login_as(@merchant_1)
+        expect(current_path).to eq(dashboard_path)
+
+        visit logout_path
+        login_as(@admin)
+        visit merchants_path
+
+        within("#merchant-#{@merchant_1.id}") do
+          expect(page).to have_button('Disable Merchant')
         end
       end
     end

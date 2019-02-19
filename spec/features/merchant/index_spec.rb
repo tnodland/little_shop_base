@@ -2,26 +2,51 @@ require 'rails_helper'
 
 RSpec.describe "merchant index workflow", type: :feature do
   describe "As a visitor" do
-    it "displays all active merchant information" do
-      merchant_1, merchant_2 = create_list(:merchant, 2)
-      inactive_merchant = create(:inactive_merchant)
-
-      visit merchants_path
-
-      within("#merchant-#{merchant_1.id}") do
-        expect(page).to have_content(merchant_1.name)
-        expect(page).to have_content("#{merchant_1.city}, #{merchant_1.state}")
-        expect(page).to have_content("Registered Date: #{merchant_1.created_at}")
+    describe "displays all active merchant information" do
+      before :each do
+        @merchant_1, @merchant_2 = create_list(:merchant, 2)
+        @inactive_merchant = create(:inactive_merchant)
       end
-
-      within("#merchant-#{merchant_2.id}") do
-        expect(page).to have_content(merchant_2.name)
-        expect(page).to have_content("#{merchant_2.city}, #{merchant_2.state}")
-        expect(page).to have_content("Registered Date: #{merchant_2.created_at}")
+      scenario 'as a visitor' do
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(nil)
+        @am_admin = false
       end
+      scenario 'as an admin' do
+        admin = create(:admin)
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(admin)
+        @am_admin = true
+      end
+      after :each do
 
-      expect(page).to_not have_content(inactive_merchant.name)
-      expect(page).to_not have_content("#{inactive_merchant.city}, #{inactive_merchant.state}")
+        visit merchants_path
+
+        within("#merchant-#{@merchant_1.id}") do
+          expect(page).to have_content(@merchant_1.name)
+          expect(page).to have_content("#{@merchant_1.city}, #{@merchant_1.state}")
+          expect(page).to have_content("Registered Date: #{@merchant_1.created_at}")
+          if @am_admin
+            expect(page).to have_button('Disable Merchant')
+          end
+        end
+
+        within("#merchant-#{@merchant_2.id}") do
+          expect(page).to have_content(@merchant_2.name)
+          expect(page).to have_content("#{@merchant_2.city}, #{@merchant_2.state}")
+          expect(page).to have_content("Registered Date: #{@merchant_2.created_at}")
+          if @am_admin
+            expect(page).to have_button('Disable Merchant')
+          end
+        end
+
+        if @am_admin
+          within("#merchant-#{@inactive_merchant.id}") do
+            expect(page).to have_button('Enable Merchant')
+          end
+        else
+          expect(page).to_not have_content(@inactive_merchant.name)
+          expect(page).to_not have_content("#{@inactive_merchant.city}, #{@inactive_merchant.state}")
+        end
+      end
     end
 
     describe "shows merchant statistics" do

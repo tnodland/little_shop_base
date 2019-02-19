@@ -27,13 +27,14 @@ Rails.application.routes.draw do
 
   scope :dashboard, as: :dashboard do
     get '/', to: 'merchants#show'
-    resources :items, module: :merchants, only: [:index, :edit, :show, :destroy]
+    resources :items, module: :merchants, only: [:index, :edit, :show, :destroy, :new, :create]
     put '/items/:id/enable', to: 'merchants/items#enable', as: :enable_item
     put '/items/:id/disable', to: 'merchants/items#disable', as: :disable_item
   end
 
   resources :merchants, only: [:index, :show]
 
+  post '/admin/users/:merchant_id/items', to: 'merchants/items#create', as: 'admin_user_items'
   namespace :admin do
     put '/users/:id/enable', to: 'users#enable', as: :enable_user
     put '/users/:id/disable', to: 'users#disable', as: :disable_user
@@ -42,14 +43,10 @@ Rails.application.routes.draw do
       resources :orders, only: [:index, :show]
     end
 
-
     put '/merchants/:id/downgrade', to: 'merchants#downgrade', as: :downgrade_merchant
-    resources :merchants, only: [:show]
-
     resources :merchants, only: [:show] do
-      resources :items, only: [:index, :edit]
+      resources :items, only: [:index, :edit, :new]
     end
-
 
     resources :dashboard, only: [:index]
   end

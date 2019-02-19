@@ -14,6 +14,136 @@ RSpec.describe 'Merchant Dashboard Items page' do
     @oi_1 = create(:fulfilled_order_item, order: @order, item: @items[0], price: 1, quantity: 1, created_at: 2.hours.ago, updated_at: 50.minutes.ago)
   end
 
+  describe 'should allow me to add a new item' do
+    describe 'with their image if one is provided' do
+      scenario 'when logged in as merchant' do
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+        @am_admin = false
+        visit dashboard_items_path
+      end
+      scenario 'when logged in as admin' do
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
+        @am_admin = true
+        visit admin_merchant_items_path(@merchant)
+      end
+      after :each do
+        click_link('Add new Item')
+
+        if @am_admin
+          expect(current_path).to eq(new_admin_merchant_item_path(@merchant))
+        else
+          expect(current_path).to eq(new_dashboard_item_path)
+        end
+        placeholder_image = 'https://picsum.photos/200/300/?image=524'
+        image = 'https://picsum.photos/200/300/?image=5'
+
+        name = 'Item Name 1'
+        description = 'Item Description 1'
+        price = 9999.99
+        inventory = 10000
+
+        fill_in :item_name, with: name
+        fill_in :item_description, with: description
+        fill_in :item_image, with: image
+        fill_in :item_price, with: price
+        fill_in :item_inventory, with: inventory
+        click_button 'Create Item'
+
+        if @am_admin
+          expect(current_path).to eq(admin_merchant_items_path(@merchant))
+        else
+          expect(current_path).to eq(dashboard_items_path)
+        end
+        expect(page).to have_content("#{name} has been added!")
+        item = Item.last
+
+        within "#item-#{item.id}" do
+          expect(page).to have_content("ID: #{item.id}")
+          expect(page).to have_content("Name: #{name}")
+          expect(page.find("#item-#{item.id}-image")['src']).to_not have_content(placeholder_image)
+          expect(page.find("#item-#{item.id}-image")['src']).to have_content(image)
+          expect(page).to have_content("Price: #{number_to_currency(price)}")
+          expect(page).to have_content("Inventory: #{inventory}")
+          expect(page).to have_link('Edit Item')
+          expect(page).to have_button('Delete Item')
+          expect(page).to have_button('Disable Item')
+          click_link item.name
+        end
+        expect(page).to have_content(description)
+      end
+    end
+
+    describe 'with a default image if none is provided' do
+      scenario 'when logged in as merchant' do
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+        @am_admin = false
+        visit dashboard_items_path
+      end
+      scenario 'when logged in as admin do' do
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
+        @am_admin = true
+        visit admin_merchant_items_path(@merchant)
+      end
+      after :each do
+        click_link('Add new Item')
+        if @am_admin
+          expect(current_path).to eq(new_admin_merchant_item_path(@merchant))
+        else
+          expect(current_path).to eq(new_dashboard_item_path)
+        end
+        placeholder_image = 'https://picsum.photos/200/300/?image=524'
+
+        name = 'Item Name 1'
+        description = 'Item Description 1'
+        price = 9999.99
+        inventory = 10000
+
+        fill_in :item_name, with: name
+        fill_in :item_description, with: description
+        # fill_in :image, with: ""
+        fill_in :item_price, with: price
+        fill_in :item_inventory, with: inventory
+        click_button 'Create Item'
+
+        if @am_admin
+          expect(current_path).to eq(admin_merchant_items_path(@merchant))
+        else
+          expect(current_path).to eq(dashboard_items_path)
+        end
+        expect(page).to have_content("#{name} has been added!")
+        item = Item.last
+
+        within "#item-#{item.id}" do
+          expect(page).to have_content("ID: #{item.id}")
+          expect(page).to have_content("Name: #{name}")
+          expect(page.find("#item-#{item.id}-image")['src']).to have_content(placeholder_image)
+          expect(page).to have_content("Price: #{number_to_currency(price)}")
+          expect(page).to have_content("Inventory: #{inventory}")
+          expect(page).to have_link('Edit Item')
+          expect(page).to have_button('Delete Item')
+          expect(page).to have_button('Disable Item')
+          click_link item.name
+        end
+        expect(page).to have_content(description)
+      end
+    end
+
+    it 'does not work if required fields are left empty' do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+
+      visit new_dashboard_item_path
+      click_button 'Create Item'
+
+      expect(page).to have_content('6 errors prohibited this item from being saved')
+      expect(page).to have_content("Name can't be blank")
+      expect(page).to have_content("Description can't be blank")
+      expect(page).to have_content("Price can't be blank")
+      expect(page).to have_content("Price is not a number")
+      expect(page).to have_content("Inventory can't be blank")
+      expect(page).to have_content("Inventory is not a number")
+    end
+  end
+
   describe 'should show all items and link to add more items' do
     scenario 'when logged in as merchant' do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)

@@ -13,9 +13,9 @@
     <% if current_admin? %>
     <p>
     <% if merchant.active %>
-    <%= button_to 'Disable Merchant', admin_disable_merchant_path(merchant) %>
+    <%= button_to 'Disable Merchant', admin_disable_merchant_path(merchant), method: :patch %>
     <% else %>
-    <%= button_to 'Enable Merchant', admin_enable_merchant_path(merchant) %>
+    <%= button_to 'Enable Merchant', admin_enable_merchant_path(merchant), method: :patch %>
     <% end %>
     </p>
     <% end %>

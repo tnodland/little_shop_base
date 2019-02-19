@@ -20,15 +20,10 @@ RSpec.describe 'Merchant Dashboard Items page' do
       @am_admin = false
       visit dashboard_path
     end
-    scenario 'when logged in as admin' do
-      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
-      @am_admin = true
-      visit admin_merchant_path(@merchant)
-    end
     after :each do
       click_link 'Items for Sale'
       if @am_admin
-        expect(current_path).to eq(admin_merchant_items_path(@merchant))
+        # expect(current_path).to eq(admin_merchant_items_path(@merchant))
       else
         expect(current_path).to eq(dashboard_items_path)
       end
@@ -43,6 +38,19 @@ RSpec.describe 'Merchant Dashboard Items page' do
           expect(page).to have_content("Price: #{number_to_currency(item.price)}")
           expect(page).to have_content("Inventory: #{item.inventory}")
           expect(page).to have_link('Edit Item')
+
+          if index == 0
+            expect(page).to_not have_button('Delete Item')
+          else
+            expect(page).to have_button('Delete Item')
+          end
+          if index != 3
+            expect(page).to have_button('Disable Item')
+            expect(page).to_not have_button('Enable Item')
+          else
+            expect(page).to have_button('Enable Item')
+            expect(page).to_not have_button('Disable Item')
+          end
         end
       end
     end

@@ -72,4 +72,24 @@ RSpec.describe Item, type: :model do
       end
     end
   end
+
+  it '.ever_ordered?' do
+    item_1, item_2, item_3, item_4, item_5 = create_list(:item, 5)
+
+    order = create(:completed_order)
+    create(:fulfilled_order_item, order: order, item: item_1, created_at: 4.days.ago, updated_at: 1.days.ago)
+
+    order = create(:order)
+    create(:fulfilled_order_item, order: order, item: item_2, created_at: 4.days.ago, updated_at: 1.days.ago)
+    create(:order_item, order: order, item: item_3, created_at: 4.days.ago, updated_at: 1.days.ago)
+
+    order = create(:order)
+    create(:order_item, order: order, item: item_4, created_at: 4.days.ago, updated_at: 1.days.ago)
+
+    expect(item_1.ever_ordered?).to eq(true)
+    expect(item_2.ever_ordered?).to eq(false)
+    expect(item_3.ever_ordered?).to eq(false)
+    expect(item_4.ever_ordered?).to eq(false)
+    expect(item_5.ever_ordered?).to eq(false)
+  end
 end

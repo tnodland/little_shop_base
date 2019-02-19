@@ -27,7 +27,9 @@ Rails.application.routes.draw do
 
   scope :dashboard, as: :dashboard do
     get '/', to: 'merchants#show'
-    resources :items, module: :merchants, only: [:index, :edit]
+    resources :items, module: :merchants, only: [:index, :edit, :show]
+    put '/items/:id/enable', to: 'merchants/items#enable', as: :enable_item
+    put '/items/:id/disable', to: 'merchants/items#disable', as: :disable_item
   end
 
   resources :merchants, only: [:index, :show]

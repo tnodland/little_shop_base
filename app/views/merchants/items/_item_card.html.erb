@@ -17,5 +17,15 @@
 <% end %>
 </p>
 
+<p><% if item.active %>
+<%= button_to 'Disable Item', dashboard_disable_item_path(item), method: :patch %>
+<% else %>
+<%= button_to 'Enable Item', dashboard_enable_item_path(item), method: :patch %>
+<% end %>
+<% unless item.ever_ordered? %>
+<%= button_to 'Delete Item', dashboard_item_path(item), method: :delete %>
+<% end %>
+</p>
+
 <% end %>
 <% end %>

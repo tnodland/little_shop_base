@@ -13,7 +13,7 @@
       <h5 class="card-title">Best Fulfillment Times</h5>
       <ul>
         <% @top_three_merchants_by_fulfillment.each do |merchant| %>
-          <li><%= link_to merchant.name, merchant_path(merchant) %>: <%= merchant.fulfillment_time.split('.').first[0..-10] %> <%= pluralize(merchant.fulfillment_time.split('.').first[-8..-7], 'hour') %> <%= pluralize(merchant.fulfillment_time.split('.').first[-5..-4], 'minute') %></li>
+          <li><%= link_to merchant.name, merchant_path(merchant) %>: <%= time_as_words(merchant.fulfillment_time) %></li>
         <% end %>
       </ul>
     <% end %>
@@ -21,7 +21,7 @@
       <h5 class="card-title">Worst Fulfillment Times</h5>
       <ul>
         <% @bottom_three_merchants_by_fulfillment.each do |merchant| %>
-          <li><%= link_to merchant.name, merchant_path(merchant) %>: <%= merchant.fulfillment_time.split('.').first[0..-10] %> <%= pluralize(merchant.fulfillment_time.split('.').first[-8..-7], 'hour') %> <%= pluralize(merchant.fulfillment_time.split('.').first[-5..-4], 'minute') %></li>
+          <li><%= link_to merchant.name, merchant_path(merchant) %>: <%= time_as_words(merchant.fulfillment_time) %></li>
         <% end %>
       </ul>
     <% end %>

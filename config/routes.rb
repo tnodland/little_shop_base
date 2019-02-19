@@ -27,7 +27,7 @@ Rails.application.routes.draw do
 
   scope :dashboard, as: :dashboard do
     get '/', to: 'merchants#show'
-    resources :items, module: :merchants, only: [:index, :edit, :show, :destroy, :new, :create]
+    resources :items, module: :merchants
     put '/items/:id/enable', to: 'merchants/items#enable', as: :enable_item
     put '/items/:id/disable', to: 'merchants/items#disable', as: :disable_item
   end
@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   resources :merchants, only: [:index, :show]
 
   post '/admin/users/:merchant_id/items', to: 'merchants/items#create', as: 'admin_user_items'
+  patch '/admin/users/:merchant_id/items/:id', to: 'merchants/items#update', as: 'admin_user_item'
   namespace :admin do
     put '/users/:id/enable', to: 'users#enable', as: :enable_user
     put '/users/:id/disable', to: 'users#disable', as: :disable_user

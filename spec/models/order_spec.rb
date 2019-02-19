@@ -36,7 +36,7 @@ RSpec.describe Order, type: :model do
     end
 
     it '.sorted_by_items_shipped' do
-      expect(Order.sorted_by_items_shipped.to_a).to eq([@o4, @o2, @o7, @o1])
+      expect(Order.sorted_by_items_shipped).to eq([@o4, @o2, @o7, @o1])
     end
 
     it '.top_orders_by_items_shipped' do

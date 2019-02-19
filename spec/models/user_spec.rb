@@ -59,7 +59,7 @@ RSpec.describe User, type: :model do
         oi7 = create(:fulfilled_order_item, item: i7, order: o7, created_at: 2.days.ago)
       end
       it ".merchants_sorted_by_revenue" do
-        expect(User.merchants_sorted_by_revenue.to_a).to eq([@m7, @m6, @m3, @m2, @m1])
+        expect(User.merchants_sorted_by_revenue).to eq([@m7, @m6, @m3, @m2, @m1])
       end
 
       it ".top_merchants_by_revenue()" do

@@ -25,9 +25,9 @@ Rails.application.routes.draw do
 
   resources :items, only: [:index, :show]
 
-  get '/dashboard', to: 'merchants#show', as: :dashboard
-  namespace :dashboard do
-    resources :items, only: [:index]
+  scope :dashboard, as: :dashboard do
+    get '/', to: 'merchants#show'
+    resources :items, module: :merchants, only: [:index, :edit]
   end
 
   resources :merchants, only: [:index, :show]
@@ -40,7 +40,7 @@ Rails.application.routes.draw do
     end
 
     resources :merchants, only: [:show] do
-      resources :items, only: [:index]
+      resources :items, only: [:index, :edit]
     end
 
     resources :dashboard, only: [:index]

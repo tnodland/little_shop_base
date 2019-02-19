@@ -1,0 +1,21 @@
+<%= tag.div class: "card float-left m-3 item-card" do %>
+  <%= tag.section class: "card-body" do %>
+
+<p>ID: <%= item.id %></p>
+<p>Name: <%= link_to item.name, item_path(item) %></p>
+<a href="<%= item_path(item) %>">
+<img id="item-<%= item.id %>-image" alt="image for <%= item.name %>" src="<%= item.image %>" width="<%= img_width %>" />
+</a>
+<p>Price: <%= number_to_currency(item.price) %></p>
+<p>Inventory: <%= item.inventory %></p>
+
+<p>
+<% if current_admin? %>
+<%= link_to 'Edit Item', edit_admin_merchant_item_path(item.user, item) %>
+<% else %>
+<%= link_to 'Edit Item', edit_dashboard_item_path(item) %>
+<% end %>
+</p>
+
+<% end %>
+<% end %>

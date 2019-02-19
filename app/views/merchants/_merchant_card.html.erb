@@ -9,5 +9,15 @@
     <% end %>
     <p><%= merchant.city %>, <%= merchant.state %></p>
     <p>Registered Date: <%= merchant.created_at %><br/>
+
+    <% if current_admin? %>
+    <p>
+    <% if merchant.active %>
+    <%= button_to 'Disable Merchant', admin_disable_merchant_path(merchant) %>
+    <% else %>
+    <%= button_to 'Enable Merchant', admin_enable_merchant_path(merchant) %>
+    <% end %>
+    </p>
+    <% end %>
   <% end %>
 <% end %>

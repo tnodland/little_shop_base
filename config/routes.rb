@@ -45,6 +45,8 @@ Rails.application.routes.draw do
     end
 
     put '/merchants/:id/downgrade', to: 'merchants#downgrade', as: :downgrade_merchant
+    put '/merchants/:id/enable', to: 'merchants#enable', as: :enable_merchant
+    put '/merchants/:id/disable', to: 'merchants#disable', as: :disable_merchant
     resources :merchants, only: [:show] do
       resources :items, only: [:index, :edit, :new]
     end

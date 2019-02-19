@@ -33,6 +33,11 @@ class Merchants::ItemsController < ApplicationController
     @form_path = [:dashboard, @item]
   end
 
+  def edit
+    @item = Item.find(params[:id])
+    @form_path = [:dashboard, @item]
+  end
+
   def create
     ip = item_params
     if ip[:image].empty?
@@ -58,6 +63,36 @@ class Merchants::ItemsController < ApplicationController
         @form_path = [:dashboard, @item]
       end
       render :new
+    end
+  end
+
+  def update
+    @merchant = current_user
+    if current_admin?
+      @merchant = User.find(params[:merchant_id])
+    end
+    @item = Item.find(params[:id])
+
+    ip = item_params
+    if ip[:image].empty?
+      ip[:image] = 'https://picsum.photos/200/300/?image=524'
+    end
+    ip[:active] = true
+    @item.update(ip)
+    if @item.save
+      flash[:success] = "#{@item.name} has been updated!"
+      if current_admin?
+        redirect_to admin_merchant_items_path(@merchant)
+      else
+        redirect_to dashboard_items_path
+      end
+    else
+      if current_admin?
+        @form_path = [:admin, @merchant, @item]
+      else
+        @form_path = [:dashboard, @item]
+      end
+      render :edit
     end
   end
 

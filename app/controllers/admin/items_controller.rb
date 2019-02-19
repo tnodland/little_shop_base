@@ -12,4 +12,12 @@ class Admin::ItemsController < Admin::BaseController
 
     render "/merchants/items/new"
   end
+
+  def edit
+    @merchant = User.find(params[:merchant_id])
+    @item = Item.find(params[:id])
+    @form_path = [:admin, @merchant, @item]
+
+    render "/merchants/items/edit"
+  end
 end

@@ -1,7 +1,11 @@
 <%= tag.div class: "card float-left m-3 merchant-card" do %>
   <%= tag.section class: "card-body" do %>
     <%= tag.h5 class: "card-title" do %>
-      <%= link_to merchant.name, merchant_path(merchant) %>
+      <% if current_admin? %>
+        <%= link_to merchant.name, admin_merchant_path(merchant) %>
+      <% else %>
+        <%= merchant.name %>
+      <% end %>
     <% end %>
     <p><%= merchant.city %>, <%= merchant.state %></p>
     <p>Registered Date: <%= merchant.created_at %><br/>

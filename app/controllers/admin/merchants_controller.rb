@@ -7,4 +7,13 @@ class Admin::MerchantsController < Admin::BaseController
       render :'/merchants/show'
     end
   end
+
+  def downgrade
+    user = User.find(params[:id])
+    user.role = :default
+    user.save
+    redirect_to merchants_path
+  end
+
+
 end

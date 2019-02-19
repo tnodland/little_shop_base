@@ -1,0 +1,9 @@
+<h3>Items for Sale</h3>
+
+<%= link_to 'Add new Item' %>
+
+<% @items.each do |item| %>
+  <%= tag.div id: "item-#{item.id}" do %>
+  <%= render partial: "/merchants/items/item_card", locals: {item: item, img_width: 200} %>
+  <% end %>
+<% end %>

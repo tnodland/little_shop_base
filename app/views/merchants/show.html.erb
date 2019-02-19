@@ -17,11 +17,13 @@
     <p>Zip: <%= @merchant.zip %></p>
   </div>
 </div>
-<section>
-<% if current_user == @merchant %>
-<%= link_to 'Items for Sale', dashboard_items_path %>
-<% else %>
-<%= link_to 'Items for Sale', admin_merchant_items_path(@merchant) %>
-<% end %>
-</section>
 
+<section>
+  <p>
+  <% if current_user == @merchant %>
+  <%= link_to 'Items for Sale', dashboard_items_path %>
+  <% else %>
+  <%= link_to 'Items for Sale', admin_merchant_items_path(@merchant) %>
+  <% end %>
+  </p>
+</section>

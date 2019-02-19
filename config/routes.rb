@@ -26,6 +26,11 @@ Rails.application.routes.draw do
   resources :items, only: [:index, :show]
 
   get '/dashboard', to: 'merchants#show', as: :dashboard
+
+  namespace :dashboard do
+    resources :items, only: [:index]
+  end
+  
   resources :merchants, only: [:index, :show]
 
   namespace :admin do
@@ -36,8 +41,15 @@ Rails.application.routes.draw do
       resources :orders, only: [:index, :show]
     end
 
+
     put '/merchants/:id/downgrade', to: 'merchants#downgrade', as: :downgrade_merchant
     resources :merchants, only: [:show]
+
+    resources :merchants, only: [:show] do
+      resources :items, only: [:index]
+    end
+
+
     resources :dashboard, only: [:index]
   end
 end

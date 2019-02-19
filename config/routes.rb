@@ -26,10 +26,11 @@ Rails.application.routes.draw do
   resources :items, only: [:index, :show]
 
   get '/dashboard', to: 'merchants#show', as: :dashboard
+
   namespace :dashboard do
     resources :items, only: [:index]
   end
-
+  
   resources :merchants, only: [:index, :show]
 
   namespace :admin do

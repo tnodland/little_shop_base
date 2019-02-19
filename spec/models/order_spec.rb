@@ -11,27 +11,6 @@ RSpec.describe Order, type: :model do
     it { should have_many(:items).through(:order_items) }
   end
 
-  describe 'instance methods' do
-    before :each do
-      user = create(:user)
-      @item_1 = create(:item)
-      @item_2 = create(:item)
-      yesterday = 1.day.ago
-
-      @order = create(:order, user: user, created_at: yesterday)
-      @oi_1 = create(:order_item, order: @order, item: @item_1, price: 1, quantity: 1, created_at: yesterday, updated_at: yesterday)
-      @oi_2 = create(:fulfilled_order_item, order: @order, item: @item_2, price: 2, quantity: 1, created_at: yesterday, updated_at: 2.hours.ago)
-    end
-
-    it '.total_item_count' do
-      expect(@order.total_item_count).to eq(@oi_1.quantity + @oi_2.quantity)
-    end
-
-    it '.total_cost' do
-      expect(@order.total_cost).to eq((@oi_1.quantity*@oi_1.price) + (@oi_2.quantity*@oi_2.price))
-    end
-  end
-
   describe 'Class Methods' do
     before :each do
       @o1 = create(:completed_order)
@@ -51,7 +30,7 @@ RSpec.describe Order, type: :model do
     end
 
     it '.sorted_by_items_shipped' do
-      expect(Order.sorted_by_items_shipped).to eq([@o4, @o2, @o7, @o1])
+      expect(Order.sorted_by_items_shipped.to_a).to eq([@o4, @o2, @o7, @o1])
     end
 
     it '.top_orders_by_items_shipped' do
@@ -62,6 +41,27 @@ RSpec.describe Order, type: :model do
       expect(Order.top_orders_by_items_shipped(3)[1].quantity).to eq(8)
       expect(Order.top_orders_by_items_shipped(3)[2].id).to eq(@o7.id)
       expect(Order.top_orders_by_items_shipped(3)[2].quantity).to eq(6)
+    end
+  end
+
+  describe 'instance methods' do
+    before :each do
+      user = create(:user)
+      @item_1 = create(:item)
+      @item_2 = create(:item)
+      yesterday = 1.day.ago
+
+      @order = create(:order, user: user, created_at: yesterday)
+      @oi_1 = create(:order_item, order: @order, item: @item_1, price: 1, quantity: 1, created_at: yesterday, updated_at: yesterday)
+      @oi_2 = create(:fulfilled_order_item, order: @order, item: @item_2, price: 2, quantity: 1, created_at: yesterday, updated_at: 2.hours.ago)
+    end
+
+    it '.total_item_count' do
+      expect(@order.total_item_count).to eq(@oi_1.quantity + @oi_2.quantity)
+    end
+
+    it '.total_cost' do
+      expect(@order.total_cost).to eq((@oi_1.quantity*@oi_1.price) + (@oi_2.quantity*@oi_2.price))
     end
   end
 end

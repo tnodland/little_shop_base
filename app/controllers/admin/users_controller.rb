@@ -12,18 +12,6 @@ class Admin::UsersController < Admin::BaseController
     end
   end
 
-  def disable
-    user = User.find(params[:id])
-    set_active_flag(user, false)
-    redirect_to admin_users_path
-  end
-
-  def enable
-    user = User.find(params[:id])
-    set_active_flag(user, true)
-    redirect_to admin_users_path
-  end
-
   def edit
     @user = User.find(params[:id])
     @form_path = [:admin, @user]
@@ -36,6 +24,18 @@ class Admin::UsersController < Admin::BaseController
       flash[:success] = "Profile has been updated"
       redirect_to admin_user_path(@user)
     end
+  end
+
+  def disable
+    user = User.find(params[:id])
+    set_active_flag(user, false)
+    redirect_to admin_users_path
+  end
+
+  def enable
+    user = User.find(params[:id])
+    set_active_flag(user, true)
+    redirect_to admin_users_path
   end
 
   private

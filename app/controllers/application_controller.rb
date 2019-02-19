@@ -41,6 +41,10 @@ class ApplicationController < ActionController::Base
     render file: 'errors/not_found', status: 404 unless current_merchant?
   end
 
+  def merchant_or_admin
+    render file: 'errors/not_found', status: 404 unless current_merchant? || current_admin?
+  end
+
   def require_admin
     render file: 'errors/not_found', status: 404 unless current_admin?
   end

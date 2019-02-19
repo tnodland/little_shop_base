@@ -8,6 +8,35 @@
 <p>State: <%= @merchant.state %></p>
 <p>Zip: <%= @merchant.zip %></p>
 
+<% if current_admin? %>
+<p>
+  <%= button_to 'Downgrade to User', admin_downgrade_merchant_path(@merchant), method: :put %>
+</p>
+<% end %>
+
+<div class="card float-left m-3 order-item-card">
+  <div class="card-body">
+    <h5 class="card-title"><%= @merchant.name %></h5>
+    <p>Role: <%= @merchant.role %></p>
+    <p>Email: <%= @merchant.email %></p>
+    <p>Address: <%= @merchant.address %></p>
+    <p>City: <%= @merchant.city %></p>
+    <p>State: <%= @merchant.state %></p>
+    <p>Zip: <%= @merchant.zip %></p>
+  </div>
+</div>
+
+<section>
+  <p>
+  <% if current_user == @merchant %>
+  <%= link_to 'Items for Sale', dashboard_items_path %>
+  <% else %>
+  <%= link_to 'Items for Sale', admin_merchant_items_path(@merchant) %>
+  <% end %>
+  </p>
+</section>
+
+
 <% if @pending_orders %>
   <table class="table">
     <thead>
@@ -30,3 +59,4 @@
     </tbody>
   </table>
 <% end %>
+

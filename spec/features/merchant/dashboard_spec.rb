@@ -74,5 +74,20 @@ RSpec.describe 'merchant dashboard' do
       expect(page).to_not have_css("#order-#{@o3.id}")
       expect(page).to_not have_css("#order-#{@o4.id}")
     end
+
+    describe 'shows a link to merchant items' do
+      scenario 'as a merchant' do
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+        visit dashboard_path
+        click_link('Items for Sale')
+        expect(current_path).to eq(dashboard_items_path)
+      end
+      scenario 'as an admin' do
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
+        visit admin_merchant_path(@merchant)
+        click_link('Items for Sale')
+        expect(current_path).to eq(admin_merchant_items_path(@merchant))
+      end
+    end
   end
 end

@@ -41,4 +41,10 @@ class Item < ApplicationRecord
   def self.unpopular_items(limit)
     item_popularity(limit, :asc)
   end
+
+  def ever_ordered?
+    OrderItem.joins(:order)
+      .where(fulfilled: true, orders: {status: :completed}, item_id: self.id)
+      .count > 0
+  end
 end

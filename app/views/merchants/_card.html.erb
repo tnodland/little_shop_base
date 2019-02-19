@@ -1,9 +1,0 @@
-<%= tag.div class: "card float-left m-3 merchant-card" do %>
-  <%= tag.section class: "card-body" do %>
-    <%= tag.h5 class: "card-title" do %>
-      <%= link_to merchant.name, merchant_path(merchant) %>
-    <% end %>
-    <p><%= merchant.city %>, <%= merchant.state %></p>
-    <p>Registered Date: <%= merchant.created_at %><br/>
-  <% end %>
-<% end %>

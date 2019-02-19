@@ -25,20 +25,37 @@ Rails.application.routes.draw do
 
   resources :items, only: [:index, :show]
 
-  get '/dashboard', to: 'merchants#show', as: :dashboard
+  scope :dashboard, as: :dashboard do
+    get '/', to: 'merchants#show'
+    resources :items, module: :merchants
+    put '/items/:id/enable', to: 'merchants/items#enable', as: :enable_item
+    put '/items/:id/disable', to: 'merchants/items#disable', as: :disable_item
+  end
+
   resources :merchants, only: [:index, :show]
 
   scope :dashboard, module: :merchant, as: :merchant do
     resources :orders, only: [:show]
   end
 
+  post '/admin/users/:merchant_id/items', to: 'merchants/items#create', as: 'admin_user_items'
+  patch '/admin/users/:merchant_id/items/:id', to: 'merchants/items#update', as: 'admin_user_item'
+
   namespace :admin do
     put '/users/:id/enable', to: 'users#enable', as: :enable_user
     put '/users/:id/disable', to: 'users#disable', as: :disable_user
+    put '/users/:id/upgrade', to: 'users#upgrade', as: :upgrade_user
     resources :users, only: [:index, :show, :edit, :update] do
       resources :orders, only: [:index, :show]
     end
-    resources :merchants, only: [:show]
+
+    put '/merchants/:id/downgrade', to: 'merchants#downgrade', as: :downgrade_merchant
+    patch '/merchants/:id/enable', to: 'merchants#enable', as: :enable_merchant
+    patch '/merchants/:id/disable', to: 'merchants#disable', as: :disable_merchant
+    resources :merchants, only: [:show] do
+      resources :items, only: [:index, :edit, :new]
+    end
+
     resources :dashboard, only: [:index]
   end
 end

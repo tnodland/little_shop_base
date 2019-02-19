@@ -26,6 +26,13 @@ class Admin::UsersController < Admin::BaseController
     end
   end
 
+  def upgrade
+    user = User.find(params[:id])
+    user.role = :merchant
+    user.save
+    redirect_to admin_users_path
+  end
+  
   def disable
     user = User.find(params[:id])
     set_active_flag(user, false)

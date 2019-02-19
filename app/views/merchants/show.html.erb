@@ -1,5 +1,11 @@
 <h1>Merchant Dashboard</h1>
 
+<% if current_admin? %>
+<p>
+  <%= button_to 'Downgrade to User', admin_downgrade_merchant_path(@merchant), method: :put %>
+</p>
+<% end %>
+
 <div class="card float-left m-3 order-item-card">
   <div class="card-body">
     <h5 class="card-title"><%= @merchant.name %></h5>
@@ -18,3 +24,4 @@
 <%= link_to 'Items for Sale', admin_merchant_items_path(@merchant) %>
 <% end %>
 </section>
+

@@ -63,4 +63,12 @@ RSpec.describe 'merchant dashboard statistics' do
       expect(page).to have_content("You have sold 26 items, 19.40% of your total inventory")
     end
   end
+
+  it 'shows top states where items were shipped, but quantity' do
+    within('#top-states-by-items-shipped') do
+      expect(page.all('li')[0]).to have_content("IA: 14")
+      expect(page.all('li')[1]).to have_content("OK: 7")
+      expect(page.all('li')[2]).to have_content("CO: 5")
+    end
+  end
 end

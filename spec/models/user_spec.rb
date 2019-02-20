@@ -166,5 +166,14 @@ RSpec.describe User, type: :model do
     it '.percent_of_items_sold' do
       expect(@m1.percent_of_items_sold).to eq(19.40)
     end
+
+    it 'top_states_by_items_shipped' do
+      expect(@m1.top_states_by_items_shipped(3)[0].state).to eq("IA")
+      expect(@m1.top_states_by_items_shipped(3)[0].quantity).to eq(14)
+      expect(@m1.top_states_by_items_shipped(3)[1].state).to eq("OK")
+      expect(@m1.top_states_by_items_shipped(3)[1].quantity).to eq(7)
+      expect(@m1.top_states_by_items_shipped(3)[2].state).to eq("CO")
+      expect(@m1.top_states_by_items_shipped(3)[2].quantity).to eq(5)
+    end
   end
 end

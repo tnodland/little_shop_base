@@ -92,4 +92,15 @@ class User < ApplicationRecord
   def percent_of_items_sold
     ((total_items_sold.to_f / total_inventory_remaining.to_f)*100).round(2)
   end
+
+  def top_states_by_items_shipped(limit)
+    items.joins(:order_items)
+         .joins('join orders on orders.id = order_items.order_id')
+         .joins('join users on users.id = orders.user_id')
+         .where(order_items: {fulfilled: true})
+         .group('users.state')
+         .select('users.state, sum(order_items.quantity) AS quantity')
+         .order('quantity DESC')
+         .limit(limit)
+  end
 end

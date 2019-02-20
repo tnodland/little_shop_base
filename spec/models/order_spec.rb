@@ -94,26 +94,20 @@ RSpec.describe Order, type: :model do
       expect(@o1.total_price_for_merchant(@merchant.id)).to eq(6.0)
       expect(@o2.total_price_for_merchant(@merchant.id)).to eq(8.0)
     end
-  end
 
-  describe 'instance methods' do
-    before :each do
+    it '.order_items_for_merchant' do
+      merchant1 = create(:merchant)
+      merchant2 = create(:merchant)
       user = create(:user)
-      @item_1 = create(:item)
-      @item_2 = create(:item)
-      yesterday = 1.day.ago
+      order = create(:order, user: user)
+      item1 = create(:item, user: merchant1)
+      item2 = create(:item, user: merchant2)
+      item3 = create(:item, user: merchant1)
+      oi1 = create(:order_item, order: order, item: item1, quantity: 1, price: 2)
+      oi2 = create(:order_item, order: order, item: item2, quantity: 2, price: 3)
+      oi3 = create(:order_item, order: order, item: item3, quantity: 3, price: 4)
 
-      @order = create(:order, user: user, created_at: yesterday)
-      @oi_1 = create(:order_item, order: @order, item: @item_1, price: 1, quantity: 1, created_at: yesterday, updated_at: yesterday)
-      @oi_2 = create(:fulfilled_order_item, order: @order, item: @item_2, price: 2, quantity: 1, created_at: yesterday, updated_at: 2.hours.ago)
-    end
-
-    it '.total_item_count' do
-      expect(@order.total_item_count).to eq(@oi_1.quantity + @oi_2.quantity)
-    end
-
-    it '.total_cost' do
-      expect(@order.total_cost).to eq((@oi_1.quantity*@oi_1.price) + (@oi_2.quantity*@oi_2.price))
+      expect(order.order_items_for_merchant(merchant1.id)).to eq([oi1, oi3])
     end
   end
 end

@@ -30,13 +30,14 @@ Rails.application.routes.draw do
     resources :items, module: :merchants
     put '/items/:id/enable', to: 'merchants/items#enable', as: :enable_item
     put '/items/:id/disable', to: 'merchants/items#disable', as: :disable_item
+    get '/orders/:id', to: 'merchants/orders#show', as: :order
   end
 
   resources :merchants, only: [:index, :show]
 
-  scope :dashboard, module: :merchant, as: :merchant do
-    resources :orders, only: [:show]
-  end
+  # scope :dashboard, module: :merchants, as: :merchant do
+  #   resources :orders, only: [:show]
+  # end
 
   post '/admin/users/:merchant_id/items', to: 'merchants/items#create', as: 'admin_user_items'
   patch '/admin/users/:merchant_id/items/:id', to: 'merchants/items#update', as: 'admin_user_item'

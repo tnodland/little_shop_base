@@ -19,6 +19,8 @@
         <p>Fulfilled: <%= oitem.fulfilled ? 'Yes' : 'No' %></p>
         <% if !oitem.fulfilled && oitem.inventory_available %>
           <%= button_to 'Fulfill', dashboard_fulfill_order_item_path(oitem), method: :put %>
+        <% elsif !oitem.fulfilled && !oitem.inventory_available %>
+          <p>You cannot fulfill this item</p>
         <% end %>
       </div>
     </div>

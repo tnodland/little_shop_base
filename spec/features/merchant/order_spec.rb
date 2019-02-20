@@ -67,6 +67,7 @@ RSpec.describe 'merchant order show workflow' do
 
         within "#oitem-#{@oi3.id}" do
           expect(page).to_not have_button("Fulfill")
+          expect(page).to have_content("You cannot fulfill this item")
         end
       end
 

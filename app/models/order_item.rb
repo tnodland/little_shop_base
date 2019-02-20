@@ -20,8 +20,10 @@ class OrderItem < ApplicationRecord
   end
 
   def fulfill
-    item.inventory -= quantity
-    self.fulfilled = true
-    save
+    if item.inventory >= quantity && !self.fulfilled
+      item.inventory -= quantity
+      self.fulfilled = true
+      save
+    end
   end
 end

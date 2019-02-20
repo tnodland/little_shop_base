@@ -45,4 +45,9 @@ class Order < ApplicationRecord
         .joins(:items)
         .distinct
   end
+
+  def order_items_for_merchant(merchant_id)
+    order_items.joins('join items on items.id = order_items.item_id')
+               .where(items: {merchant_id: merchant_id})
+  end
 end

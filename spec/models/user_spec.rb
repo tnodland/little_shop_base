@@ -102,5 +102,49 @@ RSpec.describe User, type: :model do
   end
 
   describe 'instance methods' do
+    before :each do
+      u1 = create(:user, state: "CO", city: "Fairfield")
+      u2 = create(:user, state: "OK", city: "OKC")
+      u3 = create(:user, state: "IA", city: "Fairfield")
+      u4 = create(:user, state: "IA", city: "Des Moines")
+      u5 = create(:user, state: "IA", city: "Des Moines")
+      u6 = create(:user, state: "IA", city: "Des Moines")
+      @m1 = create(:merchant)
+      @m2 = create(:merchant)
+      @i1 = create(:item, merchant_id: @m1.id)
+      @i2 = create(:item, merchant_id: @m1.id)
+      @i3 = create(:item, merchant_id: @m1.id)
+      @i4 = create(:item, merchant_id: @m1.id)
+      @i5 = create(:item, merchant_id: @m1.id)
+      @i6 = create(:item, merchant_id: @m1.id)
+      @i7 = create(:item, merchant_id: @m1.id)
+      @i8 = create(:item, merchant_id: @m2.id)
+      o1 = create(:completed_order, user: u1)
+      o2 = create(:completed_order, user: u2)
+      o3 = create(:completed_order, user: u3)
+      o4 = create(:completed_order, user: u1)
+      o5 = create(:cancelled_order, user: u5)
+      o6 = create(:completed_order, user: u6)
+      @oi1 = create(:fulfilled_order_item, item: @i1, order: o1, quantity: 2, created_at: 1.days.ago)
+      @oi2 = create(:fulfilled_order_item, item: @i2, order: o2, quantity: 7, created_at: 7.days.ago)
+      @oi2 = create(:fulfilled_order_item, item: @i2, order: o3, quantity: 7, created_at: 7.days.ago)
+      @oi3 = create(:fulfilled_order_item, item: @i3, order: o3, quantity: 4, created_at: 6.days.ago)
+      @oi4 = create(:fulfilled_order_item, item: @i4, order: o4, quantity: 3, created_at: 4.days.ago)
+      @oi5 = create(:fulfilled_order_item, item: @i5, order: o5, quantity: 1, created_at: 5.days.ago)
+      @oi6 = create(:fulfilled_order_item, item: @i6, order: o6, quantity: 2, created_at: 3.days.ago)
+    end
+
+    it '.top_items_sold_by_quantity' do
+      expect(@m1.top_items_sold_by_quantity(5)[0].name).to eq(@i2.name)
+      expect(@m1.top_items_sold_by_quantity(5)[0].quantity).to eq(14)
+      expect(@m1.top_items_sold_by_quantity(5)[1].name).to eq(@i3.name)
+      expect(@m1.top_items_sold_by_quantity(5)[1].quantity).to eq(4)
+      expect(@m1.top_items_sold_by_quantity(5)[2].name).to eq(@i4.name)
+      expect(@m1.top_items_sold_by_quantity(5)[2].quantity).to eq(3)
+      expect(@m1.top_items_sold_by_quantity(5)[3].name).to eq(@i1.name)
+      expect(@m1.top_items_sold_by_quantity(5)[3].quantity).to eq(2)
+      expect(@m1.top_items_sold_by_quantity(5)[4].name).to eq(@i6.name)
+      expect(@m1.top_items_sold_by_quantity(5)[4].quantity).to eq(2)
+    end
   end
 end

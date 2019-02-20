@@ -68,4 +68,13 @@ class User < ApplicationRecord
         .order("fulfillment_time #{order}")
         .limit(limit)
   end
+
+  def top_items_sold_by_quantity(limit)
+    items.joins(:order_items)
+         .where(order_items: {fulfilled: true})
+         .select('items.id, items.name, sum(order_items.quantity) as quantity')
+         .group(:id)
+         .order('quantity DESC')
+         .limit(limit)
+  end
 end

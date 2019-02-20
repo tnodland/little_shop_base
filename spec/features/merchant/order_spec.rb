@@ -87,40 +87,49 @@ RSpec.describe 'merchant order show workflow' do
         end
       end
 
-      it 'sets order as complete if I am the last merchant to fulfill items' do
-        user = create(:user)
+      describe 'sets order as complete if I am the last merchant to fulfill items' do
+        before :each do
+          user = create(:user)
+          @admin = create(:admin)
 
-        merchant_1 = create(:merchant)
-        item_1 = create(:item, user: merchant_1, inventory: 100)
-        item_3 = create(:item, user: merchant_1)
+          @merchant_1 = create(:merchant)
+          item_1 = create(:item, user: @merchant_1, inventory: 100)
+          item_3 = create(:item, user: @merchant_1)
 
-        merchant_2 = create(:merchant)
-        item_2 = create(:item, user: merchant_2)
+          item_2 = create(:item)
 
-        order_1 = create(:order, user: user)
-        oi_1 = create(:order_item, order: order_1, item: item_1, price: 1, quantity: 10)
-        oi_2 = create(:fulfilled_order_item, order: order_1, item: item_2, price: 1, quantity: 1)
+          @order_1 = create(:order, user: user)
+          @oi_1 = create(:order_item, order: @order_1, item: item_1, price: 1, quantity: 10)
+          create(:fulfilled_order_item, order: @order_1, item: item_2, price: 1, quantity: 1)
 
-        order_2 = create(:order, user: user)
-        oi_3 = create(:order_item, order: order_2, item: item_3, price: 1, quantity: 1)
-
-        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merchant_1)
-
-        visit dashboard_order_path(order_1)
-        expect(page).to have_content("Order Status: pending")
-        within "#oitem-#{oi_1.id}" do
-          click_button('Fulfill')
+          @order_2 = create(:order, user: user)
+          @oi_3 = create(:order_item, order: @order_2, item: item_3, price: 1, quantity: 1)
         end
-        visit dashboard_order_path(order_1)
-        expect(page).to have_content("Order Status: completed")
-
-        visit dashboard_order_path(order_2)
-        expect(page).to have_content("Order Status: pending")
-        within "#oitem-#{oi_3.id}" do
-          click_button('Fulfill')
+        scenario 'as a merchant' do
+          allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant_1)
+          @am_admin = false
         end
-        visit dashboard_order_path(order_1)
-        expect(page).to have_content("Order Status: completed")
+        scenario 'as an admin' do
+          allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
+          @am_admin = true
+        end
+        after :each do
+          visit @am_admin ? admin_merchant_order_path(@merchant_1, @order_1) : dashboard_order_path(@order_1)
+          expect(page).to have_content("Order Status: pending")
+          within "#oitem-#{@oi_1.id}" do
+            click_button('Fulfill')
+          end
+          visit @am_admin ? admin_merchant_order_path(@merchant_1, @order_1) : dashboard_order_path(@order_1)
+          expect(page).to have_content("Order Status: completed")
+
+          visit @am_admin ? admin_merchant_order_path(@merchant_1, @order_2) : dashboard_order_path(@order_2)
+          expect(page).to have_content("Order Status: pending")
+          within "#oitem-#{@oi_3.id}" do
+            click_button('Fulfill')
+          end
+          visit @am_admin ? admin_merchant_order_path(@merchant_1, @order_2) : dashboard_order_path(@order_2)
+          expect(page).to have_content("Order Status: completed")
+        end
       end
     end
   end

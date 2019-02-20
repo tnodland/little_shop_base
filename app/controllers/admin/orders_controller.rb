@@ -15,4 +15,13 @@ class Admin::OrdersController < Admin::BaseController
       render '/profile/orders/show'
     end
   end
+
+  def merchant_show
+    @merchant = User.find(params[:merchant_id])
+    @order = Order.find(params[:id])
+    @user = @order.user
+    @order_items = @order.order_items_for_merchant(@merchant.id)
+
+    render '/merchants/orders/show'
+  end
 end

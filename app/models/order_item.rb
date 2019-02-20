@@ -14,4 +14,14 @@ class OrderItem < ApplicationRecord
   def subtotal
     quantity * price
   end
+
+  def inventory_available
+    item.inventory >= quantity
+  end
+
+  def fulfill
+    item.inventory -= quantity
+    self.fulfilled = true
+    save
+  end
 end

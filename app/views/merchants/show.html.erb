@@ -30,7 +30,7 @@
     <% end %>
     <%= tag.section id: "percent-of-items-sold", class: "card-body float-left m-2" do %>
       <h5 class="card-title">Sold Items Percentage</h5>
-        <p> You have sold <%= pluralize(@merchant.total_items_sold, 'item') %>, <%= number_to_percentage(@merchant.percent_of_items_sold, precision: 2) %></p>
+        <p> You have sold <%= pluralize(@merchant.total_items_sold, 'item') %>, <%= number_to_percentage(@merchant.percent_of_items_sold, precision: 2) %> of your total inventory</p>
     <% end %>
   <% end %>
 <% end %>

@@ -164,7 +164,7 @@ RSpec.describe User, type: :model do
     end
 
     it '.percent_of_items_sold' do
-      expect(@m1.percent_of_items_sold).to eq(0.1940)
+      expect(@m1.percent_of_items_sold).to eq(19.40)
     end
   end
 end

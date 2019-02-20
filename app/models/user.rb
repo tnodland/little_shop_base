@@ -90,6 +90,6 @@ class User < ApplicationRecord
   end
 
   def percent_of_items_sold
-    (total_items_sold.to_f / total_inventory_remaining.to_f).round(4)
+    ((total_items_sold.to_f / total_inventory_remaining.to_f)*100).round(2)
   end
 end

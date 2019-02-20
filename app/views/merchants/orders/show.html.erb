@@ -4,6 +4,7 @@
   <p><%= @user.address %></p>
   <p><%= @user.city %>, <%= @user.state %> <%= @user.zip %></p>
 
+  <p>Order Status: <%= @order.status %></p>
 
   <% @order_items.each do |oitem| %>
     <div class="card float-left m-3 order-item-card" id="oitem-<%= oitem.id %>">

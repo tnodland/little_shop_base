@@ -1,5 +1,5 @@
 class Merchants::OrderItemsController < ApplicationController
-  before_action :require_merchant
+  before_action :merchant_or_admin
 
   def update
     oi = OrderItem.find(params[:id])
@@ -9,6 +9,10 @@ class Merchants::OrderItemsController < ApplicationController
       oi.order.save
     end
     flash[:success] = "You have successfully fulfilled an item"
-    redirect_to dashboard_order_path(oi.order)
+    if current_admin?
+      redirect_to admin_merchant_path(oi.item.user)
+    else
+      redirect_to dashboard_order_path(oi.order)
+    end
   end
 end

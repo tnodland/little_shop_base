@@ -71,4 +71,12 @@ RSpec.describe 'merchant dashboard statistics' do
       expect(page.all('li')[2]).to have_content("CO: 5")
     end
   end
+
+  it 'shows top cities where items were shipped, but quantity' do
+    within('#top-cities-by-items-shipped') do
+      expect(page.all('li')[0]).to have_content("Fairfield, IA: 11")
+      expect(page.all('li')[1]).to have_content("OKC, OK: 7")
+      expect(page.all('li')[2]).to have_content("Fairfield, CO: 5")
+    end
+  end
 end

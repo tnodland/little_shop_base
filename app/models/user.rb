@@ -103,4 +103,15 @@ class User < ApplicationRecord
          .order('quantity DESC')
          .limit(limit)
   end
+
+  def top_cities_by_items_shipped(limit)
+    items.joins(:order_items)
+         .joins('join orders on orders.id = order_items.order_id')
+         .joins('join users on users.id = orders.user_id')
+         .where(order_items: {fulfilled: true})
+         .group('users.state, users.city')
+         .select('users.state, users.city, sum(order_items.quantity) AS quantity')
+         .order('quantity DESC')
+         .limit(limit)
+  end
 end

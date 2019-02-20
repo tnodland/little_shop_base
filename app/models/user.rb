@@ -74,7 +74,22 @@ class User < ApplicationRecord
          .where(order_items: {fulfilled: true})
          .select('items.id, items.name, sum(order_items.quantity) as quantity')
          .group(:id)
-         .order('quantity DESC')
+         .order('quantity DESC, id')
          .limit(limit)
+  end
+
+  def total_items_sold
+    items.joins(:order_items)
+         .where(order_items: {fulfilled: true})
+         .pluck('sum(order_items.quantity)')
+         .first
+  end
+
+  def total_inventory_remaining
+    items.sum(:inventory)
+  end
+
+  def percent_of_items_sold
+    (total_items_sold.to_f / total_inventory_remaining.to_f).round(4)
   end
 end

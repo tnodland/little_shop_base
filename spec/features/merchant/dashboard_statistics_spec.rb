@@ -2,13 +2,12 @@ require 'rails_helper'
 
 RSpec.describe 'merchant dashboard statistics' do
   before :each do
-    u1 = create(:user, state: "CO", city: "Fairfield")
+    @u1 = create(:user, state: "CO", city: "Fairfield")
     u2 = create(:user, state: "OK", city: "OKC")
     u3 = create(:user, state: "IA", city: "Fairfield")
     u4 = create(:user, state: "IA", city: "Des Moines")
     u5 = create(:user, state: "IA", city: "Des Moines")
     u6 = create(:user, state: "IA", city: "Des Moines")
-    u7 = create(:user, state: "CA", city: "Fairfield")
     @m1 = create(:merchant)
     @m2 = create(:merchant)
     @i1 = create(:item, merchant_id: @m1.id, inventory: 20)
@@ -20,13 +19,12 @@ RSpec.describe 'merchant dashboard statistics' do
     @i7 = create(:item, merchant_id: @m1.id, inventory: 20)
     @i9 = create(:item, merchant_id: @m1.id, inventory: 20)
     @i8 = create(:item, merchant_id: @m2.id, inventory: 20)
-    o1 = create(:completed_order, user: u1)
+    o1 = create(:completed_order, user: @u1)
     o2 = create(:completed_order, user: u2)
     o3 = create(:completed_order, user: u3)
-    o4 = create(:completed_order, user: u1)
+    o4 = create(:completed_order, user: @u1)
     o5 = create(:cancelled_order, user: u5)
     o6 = create(:completed_order, user: u6)
-    o7 = create(:completed_order, user: u7)
     @oi1 = create(:order_item, item: @i1, order: o1, quantity: 2, created_at: 1.days.ago)
     @oi2 = create(:order_item, item: @i2, order: o2, quantity: 7, created_at: 7.days.ago)
     @oi3 = create(:order_item, item: @i2, order: o3, quantity: 7, created_at: 7.days.ago)
@@ -34,7 +32,6 @@ RSpec.describe 'merchant dashboard statistics' do
     @oi5 = create(:order_item, item: @i4, order: o4, quantity: 3, created_at: 4.days.ago)
     @oi6 = create(:order_item, item: @i5, order: o5, quantity: 1, created_at: 5.days.ago)
     @oi7 = create(:order_item, item: @i6, order: o6, quantity: 2, created_at: 3.days.ago)
-    @oi8 = create(:order_item, item: @i8, order: o7, quantity: 18, created_at: 3.days.ago)
     @oi1.fulfill
     @oi2.fulfill
     @oi3.fulfill
@@ -42,7 +39,6 @@ RSpec.describe 'merchant dashboard statistics' do
     @oi5.fulfill
     @oi6.fulfill
     @oi7.fulfill
-    @oi8.fulfill
 
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@m1)
     visit dashboard_path
@@ -77,6 +73,23 @@ RSpec.describe 'merchant dashboard statistics' do
       expect(page.all('li')[0]).to have_content("Fairfield, IA: 11")
       expect(page.all('li')[1]).to have_content("OKC, OK: 7")
       expect(page.all('li')[2]).to have_content("Fairfield, CO: 5")
+    end
+  end
+
+  it 'shows top user by order count' do
+    within("#top-user-by-order-count") do
+      expect(page).to have_content("#{@u1.name}: 2 orders")
+    end
+  end
+
+  it 'shows NA if no top user' do
+    merchant = create(:merchant)
+
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merchant)
+    visit dashboard_path
+
+    within("#top-user-by-order-count") do
+      expect(page).to have_content("N/A")
     end
   end
 end

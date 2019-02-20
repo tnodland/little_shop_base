@@ -103,7 +103,7 @@ RSpec.describe User, type: :model do
 
   describe 'instance methods' do
     before :each do
-      u1 = create(:user, state: "CO", city: "Fairfield")
+      @u1 = create(:user, state: "CO", city: "Fairfield")
       u2 = create(:user, state: "OK", city: "OKC")
       u3 = create(:user, state: "IA", city: "Fairfield")
       u4 = create(:user, state: "IA", city: "Des Moines")
@@ -120,10 +120,10 @@ RSpec.describe User, type: :model do
       @i7 = create(:item, merchant_id: @m1.id, inventory: 20)
       @i9 = create(:item, merchant_id: @m1.id, inventory: 20)
       @i8 = create(:item, merchant_id: @m2.id, inventory: 20)
-      o1 = create(:completed_order, user: u1)
+      o1 = create(:completed_order, user: @u1)
       o2 = create(:completed_order, user: u2)
       o3 = create(:completed_order, user: u3)
-      o4 = create(:completed_order, user: u1)
+      o4 = create(:completed_order, user: @u1)
       o5 = create(:cancelled_order, user: u5)
       o6 = create(:completed_order, user: u6)
       @oi1 = create(:order_item, item: @i1, order: o1, quantity: 2, created_at: 1.days.ago)
@@ -167,7 +167,7 @@ RSpec.describe User, type: :model do
       expect(@m1.percent_of_items_sold).to eq(19.40)
     end
 
-    it 'top_states_by_items_shipped' do
+    it '.top_states_by_items_shipped' do
       expect(@m1.top_states_by_items_shipped(3)[0].state).to eq("IA")
       expect(@m1.top_states_by_items_shipped(3)[0].quantity).to eq(14)
       expect(@m1.top_states_by_items_shipped(3)[1].state).to eq("OK")
@@ -176,7 +176,7 @@ RSpec.describe User, type: :model do
       expect(@m1.top_states_by_items_shipped(3)[2].quantity).to eq(5)
     end
 
-    it 'top_cities_by_items_shipped' do
+    it '.top_cities_by_items_shipped' do
       expect(@m1.top_cities_by_items_shipped(3)[0].city).to eq("Fairfield")
       expect(@m1.top_cities_by_items_shipped(3)[0].state).to eq("IA")
       expect(@m1.top_cities_by_items_shipped(3)[0].quantity).to eq(11)
@@ -186,6 +186,11 @@ RSpec.describe User, type: :model do
       expect(@m1.top_cities_by_items_shipped(3)[2].city).to eq("Fairfield")
       expect(@m1.top_cities_by_items_shipped(3)[2].state).to eq("CO")
       expect(@m1.top_cities_by_items_shipped(3)[2].quantity).to eq(5)
+    end
+
+    it '.top_user_by_order_count' do
+      expect(@m1.top_user_by_order_count.name).to eq(@u1.name)
+      expect(@m1.top_user_by_order_count.count).to eq(2)
     end
   end
 end

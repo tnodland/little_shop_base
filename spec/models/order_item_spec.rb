@@ -20,5 +20,43 @@ RSpec.describe OrderItem, type: :model do
 
       expect(oi.subtotal).to eq(15)
     end
+
+    it 'inventory_available' do
+      item = create(:item, inventory:2)
+      oi1 = create(:order_item, quantity: 1, item: item)
+      oi2 = create(:order_item, quantity: 2, item: item)
+      oi3 = create(:order_item, quantity: 3, item: item)
+
+      expect(oi1.inventory_available).to eq(true)
+      expect(oi2.inventory_available).to eq(true)
+      expect(oi3.inventory_available).to eq(false)
+    end
+
+    it '.fulfill' do
+      item = create(:item, inventory:2)
+      oi1 = create(:order_item, quantity: 1, item: item)
+      oi2 = create(:order_item, quantity: 1, item: item)
+      oi3 = create(:order_item, quantity: 1, item: item)
+
+      oi1.fulfill
+
+      expect(oi1.fulfilled).to eq(true)
+      expect(item.inventory).to eq(1)
+
+      oi2.fulfill
+
+      expect(oi1.fulfilled).to eq(true)
+      expect(item.inventory).to eq(0)
+
+      oi2.fulfill
+
+      expect(oi2.fulfilled).to eq(true)
+      expect(item.inventory).to eq(0)
+
+      oi3.fulfill
+
+      expect(oi2.fulfilled).to eq(true)
+      expect(item.inventory).to eq(0)
+    end
   end
 end

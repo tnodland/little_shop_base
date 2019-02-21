@@ -23,6 +23,7 @@ class OrderItem < ApplicationRecord
     if item.inventory >= quantity && !self.fulfilled
       item.inventory -= quantity
       self.fulfilled = true
+      item.save
       save
     end
   end

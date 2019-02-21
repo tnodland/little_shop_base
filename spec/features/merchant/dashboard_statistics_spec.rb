@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'merchant dashboard statistics' do
   before :each do
     @u1 = create(:user, state: "CO", city: "Fairfield")
-    u2 = create(:user, state: "OK", city: "OKC")
+    @u2 = create(:user, state: "OK", city: "OKC")
     @u3 = create(:user, state: "IA", city: "Fairfield")
     u4 = create(:user, state: "IA", city: "Des Moines")
     u5 = create(:user, state: "IA", city: "Des Moines")
@@ -20,7 +20,7 @@ RSpec.describe 'merchant dashboard statistics' do
     @i9 = create(:item, merchant_id: @m1.id, inventory: 20)
     @i8 = create(:item, merchant_id: @m2.id, inventory: 20)
     o1 = create(:completed_order, user: @u1)
-    o2 = create(:completed_order, user: u2)
+    o2 = create(:completed_order, user: @u2)
     o3 = create(:completed_order, user: @u3)
     o4 = create(:completed_order, user: @u1)
     o5 = create(:cancelled_order, user: u5)
@@ -107,6 +107,14 @@ RSpec.describe 'merchant dashboard statistics' do
 
     within("#top-user-by-item-count") do
       expect(page).to have_content("N/A")
+    end
+  end
+
+  it 'shows top users by money spent' do
+    within('#top-users-by-money-spent') do
+      expect(page.all('li')[0]).to have_content("#{@u3.name}: $72.00")
+      expect(page.all('li')[1]).to have_content("#{@u1.name}: $33.00")
+      expect(page.all('li')[2]).to have_content("#{@u2.name}: $31.50")
     end
   end
 end

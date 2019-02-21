@@ -136,4 +136,15 @@ class User < ApplicationRecord
          .order('quantity DESC')
          .limit(1).first
   end
+
+  def top_users_by_money_spent(limit)
+    items.joins(:order_items)
+         .joins('join orders on orders.id = order_items.order_id')
+         .joins('join users on users.id = orders.user_id')
+         .where(order_items: {fulfilled: true})
+         .group('users.id')
+         .select('users.name, sum(order_items.quantity * order_items.price) AS total')
+         .order('total DESC')
+         .limit(limit)
+  end
 end

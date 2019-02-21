@@ -104,7 +104,7 @@ RSpec.describe User, type: :model do
   describe 'instance methods' do
     before :each do
       @u1 = create(:user, state: "CO", city: "Fairfield")
-      u2 = create(:user, state: "OK", city: "OKC")
+      @u2 = create(:user, state: "OK", city: "OKC")
       @u3 = create(:user, state: "IA", city: "Fairfield")
       u4 = create(:user, state: "IA", city: "Des Moines")
       u5 = create(:user, state: "IA", city: "Des Moines")
@@ -121,7 +121,7 @@ RSpec.describe User, type: :model do
       @i9 = create(:item, merchant_id: @m1.id, inventory: 20)
       @i8 = create(:item, merchant_id: @m2.id, inventory: 20)
       o1 = create(:completed_order, user: @u1)
-      o2 = create(:completed_order, user: u2)
+      o2 = create(:completed_order, user: @u2)
       o3 = create(:completed_order, user: @u3)
       o4 = create(:completed_order, user: @u1)
       o5 = create(:cancelled_order, user: u5)
@@ -196,6 +196,15 @@ RSpec.describe User, type: :model do
     it '.top_user_by_item_count' do
       expect(@m1.top_user_by_item_count.name).to eq(@u3.name)
       expect(@m1.top_user_by_item_count.quantity).to eq(10)
+    end
+
+    it '.top_users_by_money_spent' do
+      expect(@m1.top_users_by_money_spent(3)[0].name).to eq(@u3.name)
+      expect(@m1.top_users_by_money_spent(3)[0].total).to eq(66.0)
+      expect(@m1.top_users_by_money_spent(3)[1].name).to eq(@u2.name)
+      expect(@m1.top_users_by_money_spent(3)[1].total).to eq(36.0)
+      expect(@m1.top_users_by_money_spent(3)[2].name).to eq(@u1.name)
+      expect(@m1.top_users_by_money_spent(3)[2].total).to eq(33.0)
     end
   end
 end

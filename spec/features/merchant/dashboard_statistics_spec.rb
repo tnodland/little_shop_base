@@ -4,7 +4,7 @@ RSpec.describe 'merchant dashboard statistics' do
   before :each do
     @u1 = create(:user, state: "CO", city: "Fairfield")
     u2 = create(:user, state: "OK", city: "OKC")
-    u3 = create(:user, state: "IA", city: "Fairfield")
+    @u3 = create(:user, state: "IA", city: "Fairfield")
     u4 = create(:user, state: "IA", city: "Des Moines")
     u5 = create(:user, state: "IA", city: "Des Moines")
     u6 = create(:user, state: "IA", city: "Des Moines")
@@ -21,7 +21,7 @@ RSpec.describe 'merchant dashboard statistics' do
     @i8 = create(:item, merchant_id: @m2.id, inventory: 20)
     o1 = create(:completed_order, user: @u1)
     o2 = create(:completed_order, user: u2)
-    o3 = create(:completed_order, user: u3)
+    o3 = create(:completed_order, user: @u3)
     o4 = create(:completed_order, user: @u1)
     o5 = create(:cancelled_order, user: u5)
     o6 = create(:completed_order, user: u6)
@@ -82,13 +82,30 @@ RSpec.describe 'merchant dashboard statistics' do
     end
   end
 
-  it 'shows NA if no top user' do
+  it 'shows NA if no top user by order' do
     merchant = create(:merchant)
 
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merchant)
     visit dashboard_path
 
     within("#top-user-by-order-count") do
+      expect(page).to have_content("N/A")
+    end
+  end
+
+  it 'shows top user by item count' do
+    within("#top-user-by-item-count") do
+      expect(page).to have_content("#{@u3.name}: 11 items")
+    end
+  end
+
+  it 'shows NA if no top user by item' do
+    merchant = create(:merchant)
+
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merchant)
+    visit dashboard_path
+
+    within("#top-user-by-item-count") do
       expect(page).to have_content("N/A")
     end
   end

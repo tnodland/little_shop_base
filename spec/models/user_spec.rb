@@ -105,7 +105,7 @@ RSpec.describe User, type: :model do
     before :each do
       @u1 = create(:user, state: "CO", city: "Fairfield")
       u2 = create(:user, state: "OK", city: "OKC")
-      u3 = create(:user, state: "IA", city: "Fairfield")
+      @u3 = create(:user, state: "IA", city: "Fairfield")
       u4 = create(:user, state: "IA", city: "Des Moines")
       u5 = create(:user, state: "IA", city: "Des Moines")
       u6 = create(:user, state: "IA", city: "Des Moines")
@@ -122,13 +122,13 @@ RSpec.describe User, type: :model do
       @i8 = create(:item, merchant_id: @m2.id, inventory: 20)
       o1 = create(:completed_order, user: @u1)
       o2 = create(:completed_order, user: u2)
-      o3 = create(:completed_order, user: u3)
+      o3 = create(:completed_order, user: @u3)
       o4 = create(:completed_order, user: @u1)
       o5 = create(:cancelled_order, user: u5)
       o6 = create(:completed_order, user: u6)
       @oi1 = create(:order_item, item: @i1, order: o1, quantity: 2, created_at: 1.days.ago)
-      @oi2 = create(:order_item, item: @i2, order: o2, quantity: 7, created_at: 7.days.ago)
-      @oi3 = create(:order_item, item: @i2, order: o3, quantity: 7, created_at: 7.days.ago)
+      @oi2 = create(:order_item, item: @i2, order: o2, quantity: 8, created_at: 7.days.ago)
+      @oi3 = create(:order_item, item: @i2, order: o3, quantity: 6, created_at: 7.days.ago)
       @oi4 = create(:order_item, item: @i3, order: o3, quantity: 4, created_at: 6.days.ago)
       @oi5 = create(:order_item, item: @i4, order: o4, quantity: 3, created_at: 4.days.ago)
       @oi6 = create(:order_item, item: @i5, order: o5, quantity: 1, created_at: 5.days.ago)
@@ -169,9 +169,9 @@ RSpec.describe User, type: :model do
 
     it '.top_states_by_items_shipped' do
       expect(@m1.top_states_by_items_shipped(3)[0].state).to eq("IA")
-      expect(@m1.top_states_by_items_shipped(3)[0].quantity).to eq(14)
+      expect(@m1.top_states_by_items_shipped(3)[0].quantity).to eq(13)
       expect(@m1.top_states_by_items_shipped(3)[1].state).to eq("OK")
-      expect(@m1.top_states_by_items_shipped(3)[1].quantity).to eq(7)
+      expect(@m1.top_states_by_items_shipped(3)[1].quantity).to eq(8)
       expect(@m1.top_states_by_items_shipped(3)[2].state).to eq("CO")
       expect(@m1.top_states_by_items_shipped(3)[2].quantity).to eq(5)
     end
@@ -179,10 +179,10 @@ RSpec.describe User, type: :model do
     it '.top_cities_by_items_shipped' do
       expect(@m1.top_cities_by_items_shipped(3)[0].city).to eq("Fairfield")
       expect(@m1.top_cities_by_items_shipped(3)[0].state).to eq("IA")
-      expect(@m1.top_cities_by_items_shipped(3)[0].quantity).to eq(11)
+      expect(@m1.top_cities_by_items_shipped(3)[0].quantity).to eq(10)
       expect(@m1.top_cities_by_items_shipped(3)[1].city).to eq("OKC")
       expect(@m1.top_cities_by_items_shipped(3)[1].state).to eq("OK")
-      expect(@m1.top_cities_by_items_shipped(3)[1].quantity).to eq(7)
+      expect(@m1.top_cities_by_items_shipped(3)[1].quantity).to eq(8)
       expect(@m1.top_cities_by_items_shipped(3)[2].city).to eq("Fairfield")
       expect(@m1.top_cities_by_items_shipped(3)[2].state).to eq("CO")
       expect(@m1.top_cities_by_items_shipped(3)[2].quantity).to eq(5)
@@ -191,6 +191,11 @@ RSpec.describe User, type: :model do
     it '.top_user_by_order_count' do
       expect(@m1.top_user_by_order_count.name).to eq(@u1.name)
       expect(@m1.top_user_by_order_count.count).to eq(2)
+    end
+
+    it '.top_user_by_item_count' do
+      expect(@m1.top_user_by_item_count.name).to eq(@u3.name)
+      expect(@m1.top_user_by_item_count.quantity).to eq(10)
     end
   end
 end

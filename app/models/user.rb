@@ -116,13 +116,24 @@ class User < ApplicationRecord
   end
 
   def top_user_by_order_count
-    result = items.joins(:order_items)
+    items.joins(:order_items)
          .joins('join orders on orders.id = order_items.order_id')
          .joins('join users on users.id = orders.user_id')
          .where(order_items: {fulfilled: true})
          .group('users.id')
          .select('users.name, count(orders.id) AS count')
          .order('count DESC')
+         .limit(1).first
+  end
+
+  def top_user_by_item_count
+    items.joins(:order_items)
+         .joins('join orders on orders.id = order_items.order_id')
+         .joins('join users on users.id = orders.user_id')
+         .where(order_items: {fulfilled: true})
+         .group('users.id')
+         .select('users.name, sum(order_items.quantity) AS quantity')
+         .order('quantity DESC')
          .limit(1).first
   end
 end

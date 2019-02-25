@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Coupon do
   context "relationships" do
-    it {should belong_to(:merchant)}
+    it {should belong_to(:user)}
     it {should belong_to(:item)}
   end
 

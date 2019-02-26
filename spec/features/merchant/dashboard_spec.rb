@@ -35,7 +35,7 @@ RSpec.describe 'merchant dashboard' do
       end
     end
 
-    describe "coupon tests" do
+    describe "coupon link test" do
       it "can see a link to manage their coupons" do
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
 

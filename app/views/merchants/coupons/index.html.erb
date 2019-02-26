@@ -1,0 +1,5 @@
+<h1>All your coupons: </h1>
+<% @coupons.each do |coupon| %>
+  <p>Coupon: <%= coupon.code %></p>
+  <p>Price modifier: <%= coupon.modifier %></p>
+<% end %>

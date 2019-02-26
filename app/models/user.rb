@@ -79,6 +79,14 @@ class User < ApplicationRecord
          .limit(limit)
   end
 
+  def five_active?
+    if (Coupon.where(user: self)).count == 5
+      true
+    else
+      false
+    end 
+  end
+
   def total_items_sold
     items.joins(:order_items)
          .where(order_items: {fulfilled: true})

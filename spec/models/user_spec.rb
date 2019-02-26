@@ -156,6 +156,19 @@ RSpec.describe User, type: :model do
       expect(@m1.top_items_sold_by_quantity(5)[4].quantity).to eq(2)
     end
 
+    it ".five_active?" do
+      coupon1 = @i1.coupons.create(user: @m1, code: "test_coupon1", modifier: 0.75)
+      coupon2 = @i1.coupons.create(user: @m1, code: "test_coupon2", modifier: 0.75)
+      coupon3 = @i1.coupons.create(user: @m1, code: "test_coupon3", modifier: 0.75)
+      coupon4 = @i1.coupons.create(user: @m1, code: "test_coupon4", modifier: 0.75)
+
+      expect(@m1.five_active?).to eq(false)
+
+      coupon5 = @i1.coupons.create(user: @m1, code: "test_coupon5", modifier: 0.75)
+
+      expect(@m1.five_active?).to eq(true)
+    end
+
     it '.total_items_sold' do
       expect(@m1.total_items_sold).to eq(26)
     end

@@ -149,6 +149,21 @@ RSpec.describe 'merchant coupons' do
       within "#coupon-#{@coupon.id}" do
         expect(page).to_not have_link("Disable")
       end
+
+    end
+
+    it "can only have 5 enabled coupons at once" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+      coupon3 = @item.coupons.create(user: @merchant, code: "test_coupon3", modifier: 0.75)
+      coupon4 = @item.coupons.create(user: @merchant, code: "test_coupon4", modifier: 0.75)
+      coupon5 = @item.coupons.create(user: @merchant, code: "test_coupon5", modifier: 0.75)
+      coupon6 = @item.coupons.create(user: @merchant, code: "test_coupon6", modifier: 0.75)
+
+      visit dashboard_coupons_path(@merchant)
+
+      within "#coupon-#{@coupon2.id}" do
+        expect(page).to_not have_link("Enable")
+      end
     end
   end
 end

@@ -34,6 +34,7 @@ Rails.application.routes.draw do
     put '/order_items/:id', to: 'merchants/order_items#update', as: :fulfill_order_item
     get '/coupons/:id', to: 'merchants/coupons#index', as: :coupons
     get '/coupon/:id', to: 'merchants/coupons#show', as: :coupon
+    get '/coupon/new/:id', to: 'merchants/coupons#new', as: :new_coupon
   end
 
   resources :merchants, only: [:index, :show]

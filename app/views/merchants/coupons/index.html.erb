@@ -1,4 +1,5 @@
 <h1>All your coupons: </h1>
+<h3><%= link_to "Add a new coupon", dashboard_new_coupon_path(@merchant) %> </h3>
 <% @coupons.each do |coupon| %>
   <p>Coupon: <%= link_to "#{coupon.code}", dashboard_coupon_path(@merchant) %></p>
   <p>Price modifier: <%= coupon.modifier %></p>

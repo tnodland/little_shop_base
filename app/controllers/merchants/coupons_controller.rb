@@ -6,6 +6,10 @@ class Merchants::CouponsController < ApplicationController
     @coupons = Coupon.where(user: @merchant)
   end
 
+  def new
+
+  end
+
   def show
 
   end

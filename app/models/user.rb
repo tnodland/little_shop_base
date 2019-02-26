@@ -80,11 +80,11 @@ class User < ApplicationRecord
   end
 
   def five_active?
-    if (Coupon.where(user: self)).count == 5
+    if (Coupon.where(["user_id = ? and active = ?", "#{self.id}", "true"])).count == 5
       true
     else
       false
-    end 
+    end
   end
 
   def total_items_sold

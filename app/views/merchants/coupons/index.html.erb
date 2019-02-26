@@ -7,7 +7,7 @@
   <p> <%= link_to "Delete this coupon", dashboard_delete_coupon_path(coupon) %> </p>
   <% if coupon.active? %>
     <p> <%= link_to "Disable", dashboard_coupon_disable_path(coupon) %> </p>
-  <% elsif !@merchant.fiveactive? %>
+  <% elsif !@merchant.five_active? %>
     <p> <%= link_to "Enable", dashboard_coupon_enable_path(coupon) %> </p>
   <% end %>
 </section>

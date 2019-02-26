@@ -69,5 +69,26 @@ RSpec.describe 'merchant coupons' do
         expect(page).to_not have_link("Enable")
       end
     end
+
+    it "can disable a coupon" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+
+      visit dashboard_coupons_path(@merchant)
+
+      within "#coupon-#{@coupon2.id}" do
+        expect(page).to_not have_link("Disable")
+      end
+
+      within "#coupon-#{@coupon.id}" do
+        expect(page).to have_link("Disable")
+        click_link "Disable"
+      end
+
+      expect(current_path).to eq(dashboard_coupons_path(@merchant))
+
+      within "#coupon-#{@coupon.id}" do
+        expect(page).to_not have_link("Disable")
+      end
+    end
   end
 end

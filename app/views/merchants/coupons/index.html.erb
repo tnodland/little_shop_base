@@ -3,7 +3,9 @@
 <section id=coupon-<%= coupon.id %>>
   <p>Coupon: <%= link_to "#{coupon.code}", dashboard_coupon_path(@merchant) %></p>
   <p>Price modifier: <%= coupon.modifier %></p>
-  <% if !coupon.active? %>
+  <% if coupon.active? %>
+    <p> <%= link_to "Disable", dashboard_coupon_disable_path(coupon) %> </p>
+  <% else %>
     <p> <%= link_to "Enable", dashboard_coupon_enable_path(coupon) %> </p>
   <% end %>
 </section>

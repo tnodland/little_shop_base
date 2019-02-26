@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190225222758) do
+ActiveRecord::Schema.define(version: 20190226191632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20190225222758) do
     t.float "modifier"
     t.bigint "user_id"
     t.bigint "item_id"
+    t.boolean "active", default: true
     t.index ["item_id"], name: "index_coupons_on_item_id"
     t.index ["user_id"], name: "index_coupons_on_user_id"
   end

@@ -8,6 +8,7 @@
 
 <% @items.each do |item| %>
   <%= tag.div id: "item-#{item.id}" do %>
+  <%= link_to "Add a new coupon for this item", dashboard_new_coupon_path(item) %>
   <%= render partial: "/merchants/items/item_card", locals: {item: item, img_width: 200} %>
   <% end %>
 <% end %>

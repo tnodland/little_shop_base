@@ -26,13 +26,27 @@ RSpec.describe 'merchant coupons' do
     it "should see a link to add a new coupon" do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
 
-      visit dashboard_coupons_path(@merchant)
+      visit dashboard_items_path
+      within "#item-#{@item.id}" do
+        expect(page).to have_link("Add a new coupon for this item")
+        click_link "Add a new coupon for this item"
+      end
 
-      expect(page).to have_link("Add a new coupon")
 
-      click_link "Add a new coupon"
+      expect(current_path).to eq(dashboard_new_coupon_path(@item))
+    end
 
-      expect(current_path).to eq(dashboard_new_coupon_path(@merchant))
+    it "can create a new coupon" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+      visit dashboard_new_coupon_path(@item)
+
+      fill_in "Code", with: "twentyfive"
+      fill_in "Modifier", with: 0.75
+
+      click_on "Create Coupon"
+
+      expect(current_path).to eq(dashboard_coupons_path(@merchant))
+      expect(page).to have_content("twentyfive")
     end
   end
 end

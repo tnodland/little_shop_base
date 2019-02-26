@@ -104,6 +104,18 @@ RSpec.describe 'merchant coupons' do
       end
     end
 
+    it "can't update a coupon with missing fields" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+
+      visit dashboard_edit_coupon_path(@coupon)
+
+      fill_in "Code", with: ""
+      fill_in "Modifier", with: 0.8
+      click_on "Update Coupon"
+
+      expect(current_path).to eq(dashboard_edit_coupon_path(@coupon))
+    end
+
     it "can disable a coupon" do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
 

@@ -6,7 +6,7 @@ RSpec.describe 'merchant coupons' do
       @merchant = create(:merchant)
       @item = create(:item, user: @merchant)
       @coupon = @item.coupons.create(user: @merchant, code: "coupon", modifier: 0.75)
-      @coupon2 = @item.coupons.create(user: @merchant, code: "coupon2", modifier: 1)
+      @coupon2 = @item.coupons.create(user: @merchant, code: "coupon2", modifier: 1, active: false)
 
     end
     it "should see all coupons" do
@@ -47,6 +47,27 @@ RSpec.describe 'merchant coupons' do
 
       expect(current_path).to eq(dashboard_coupons_path(@merchant))
       expect(page).to have_content("twentyfive")
+    end
+
+    it "can a activate a coupon" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+
+      visit dashboard_coupons_path(@merchant)
+
+      within "#coupon-#{@coupon.id}" do
+        expect(page).to_not have_link("Enable")
+      end
+
+      within "#coupon-#{@coupon2.id}" do
+        expect(page).to have_link("Enable")
+        click_link "Enable"
+      end
+
+      expect(current_path).to eq(dashboard_coupons_path(@merchant))
+
+      within "#coupon-#{@coupon2.id}" do
+        expect(page).to_not have_link("Enable")
+      end
     end
   end
 end

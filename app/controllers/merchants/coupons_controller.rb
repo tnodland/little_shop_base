@@ -23,6 +23,14 @@ class Merchants::CouponsController < ApplicationController
     end
   end
 
+  def enable
+    @coupon = Coupon.find(params[:id])
+    @coupon.update(active: true)
+    @coupon.save
+    @merchant = User.find(@coupon.user_id)
+    redirect_to dashboard_coupons_path(@merchant)
+  end
+
   def show
 
   end

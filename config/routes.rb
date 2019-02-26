@@ -36,6 +36,7 @@ Rails.application.routes.draw do
     get '/coupon/:id', to: 'merchants/coupons#show', as: :coupon
     get '/coupons/new/:id', to: 'merchants/coupons#new', as: :new_coupon
     post '/coupons/new/:id', to: 'merchants/coupons#create'
+    get '/coupon/enable/:id', to: 'merchants/coupons#enable', as: :coupon_enable
   end
 
   resources :merchants, only: [:index, :show]

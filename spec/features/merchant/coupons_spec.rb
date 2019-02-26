@@ -130,6 +130,10 @@ RSpec.describe 'merchant coupons' do
       expect(page).to_not have_content("#{@coupon.code}")
     end
 
+    it "can't delete a coupon that has been used" do
+
+    end
+
     it "can disable a coupon" do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
 

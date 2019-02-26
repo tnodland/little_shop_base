@@ -9,12 +9,16 @@ RSpec.describe 'merchant coupons' do
       coupon2 = item.coupons.create(user: merchant, code: "coupon2", modifier: 1)
 
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merchant)
-      
+
       visit dashboard_coupons_path(merchant)
 
-      expect(page).to have_content("#{coupon.code}")
+      expect(page).to have_link("#{coupon.code}")
       expect(page).to have_content("#{coupon.modifier}")
-      expect(page).to have_content("#{coupon2.code}")
+      expect(page).to have_link("#{coupon2.code}")
+
+      click_link "#{coupon.code}"
+
+      expect(current_path).to eq(dashboard_coupon_path(merchant))
     end
   end
 end

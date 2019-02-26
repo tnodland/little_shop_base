@@ -5,4 +5,8 @@ class Merchants::CouponsController < ApplicationController
     @merchant = User.find(params[:id])
     @coupons = Coupon.where(user: @merchant)
   end
+
+  def show
+
+  end
 end

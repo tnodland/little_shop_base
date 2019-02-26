@@ -49,6 +49,17 @@ RSpec.describe 'merchant coupons' do
       expect(page).to have_content("twentyfive")
     end
 
+    it "can't create a coupon with missing fields" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+      visit dashboard_new_coupon_path(@item)
+
+      fill_in "Code", with: "twentyfive"
+
+      click_on "Create Coupon"
+
+      expect(current_path).to eq(dashboard_new_coupon_path(@item))
+    end
+
     it "can a activate a coupon" do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
 
@@ -67,6 +78,29 @@ RSpec.describe 'merchant coupons' do
 
       within "#coupon-#{@coupon2.id}" do
         expect(page).to_not have_link("Enable")
+      end
+    end
+
+    it "can update a coupon" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+
+      visit dashboard_coupons_path(@merchant)
+
+      within "#coupon-#{@coupon.id}" do
+        expect(page).to have_link("Edit this coupon")
+        click_link "Edit this coupon"
+      end
+
+      expect(current_path).to eq(dashboard_edit_coupon_path(@coupon))
+
+      fill_in "Code", with: "twenty"
+      fill_in "Modifier", with: 0.8
+
+      click_on "Update Coupon"
+
+      expect(current_path).to eq(dashboard_coupons_path(@merchant))
+      within "#coupon-#{@coupon.id}" do
+        expect(page).to have_content("twenty")
       end
     end
 

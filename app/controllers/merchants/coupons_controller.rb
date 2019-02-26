@@ -18,8 +18,30 @@ class Merchants::CouponsController < ApplicationController
     @merchant = User.find(@item.merchant_id)
     @coupon.update(item: @item)
     @coupon.update(user: @merchant)
+
     if @coupon.save
       redirect_to dashboard_coupons_path(@merchant)
+    else
+      redirect_to dashboard_new_coupon_path(@item)
+    end
+  end
+
+  def edit
+    @coupon = Coupon.find(params[:id])
+    # binding.pry
+  end
+
+  def update
+    @coupon = Coupon.find(params[:id])
+    @coupon.update(coupon_params)
+    # binding.pry
+    @item = Item.find(@coupon.item_id)
+    @merchant = User.find(@coupon.user_id)
+
+    if @coupon.save
+      redirect_to dashboard_coupons_path(@merchant)
+    else
+      redirect_to dashboard_new_coupon_path(@item)
     end
   end
 

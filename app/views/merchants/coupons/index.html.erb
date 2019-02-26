@@ -4,6 +4,7 @@
   <p>Coupon: <%= link_to "#{coupon.code}", dashboard_coupon_path(@merchant) %></p>
   <p>Price modifier: <%= coupon.modifier %></p>
   <p> <%= link_to "Edit this coupon", dashboard_edit_coupon_path(coupon) %> </p>
+  <p> <%= link_to "Delete this coupon", dashboard_delete_coupon_path(coupon) %> </p>
   <% if coupon.active? %>
     <p> <%= link_to "Disable", dashboard_coupon_disable_path(coupon) %> </p>
   <% else %>

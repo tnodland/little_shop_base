@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     patch '/coupons/edit/:id', to: 'merchants/coupons#update', as: :update_coupon
     get '/coupon/enable/:id', to: 'merchants/coupons#enable', as: :coupon_enable
     get '/coupon/disable/:id', to: 'merchants/coupons#disable', as: :coupon_disable
+    get '/coupon/delete/:id', to: 'merchants/coupons#destroy', as: :delete_coupon
   end
 
   resources :merchants, only: [:index, :show]

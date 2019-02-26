@@ -5,7 +5,7 @@ RSpec.describe 'merchant coupons' do
     before :each do
       @merchant = create(:merchant)
       @item = create(:item, user: @merchant)
-      @coupon = @item.coupons.create(user: @merchant, code: "coupon", modifier: 0.75)
+      @coupon = @item.coupons.create(user: @merchant, code: "test_coupon", modifier: 0.75)
       @coupon2 = @item.coupons.create(user: @merchant, code: "coupon2", modifier: 1, active: false)
 
     end
@@ -114,6 +114,20 @@ RSpec.describe 'merchant coupons' do
       click_on "Update Coupon"
 
       expect(current_path).to eq(dashboard_edit_coupon_path(@coupon))
+    end
+
+    it "can delete a coupon" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+
+      visit dashboard_coupons_path(@merchant)
+
+      within "#coupon-#{@coupon.id}" do
+        expect(page).to have_link("Delete this coupon")
+        click_link "Delete this coupon"
+      end
+
+      expect(current_path).to eq(dashboard_coupons_path(@merchant))
+      expect(page).to_not have_content("#{@coupon.code}")
     end
 
     it "can disable a coupon" do

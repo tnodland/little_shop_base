@@ -9,6 +9,7 @@ class User < ApplicationRecord
   # as a merchant
   has_many :items, foreign_key: 'merchant_id'
   has_many :coupons
+  has_many :locations
 
   validates_presence_of :name, :address, :city, :state, :zip
   validates :email, presence: true, uniqueness: true

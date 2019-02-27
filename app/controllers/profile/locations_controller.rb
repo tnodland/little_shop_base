@@ -11,7 +11,11 @@ class Profile::LocationsController < ApplicationController
   def create
     @location = Location.create(location_params)
     @location.update(user: current_user)
-    redirect_to profile_locations_path
+    if @location.save
+      redirect_to profile_locations_path
+    else
+      redirect_to new_profile_location_path
+    end
   end
 
   private

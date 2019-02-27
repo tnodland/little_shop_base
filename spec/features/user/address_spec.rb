@@ -63,6 +63,20 @@ RSpec.describe 'user addresses' do
       expect(page).to have_content("colorado")
       expect(page).to have_content(11111)
     end
+
+    it "can't create a location if fields are missing" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
+      visit new_profile_location_path
+
+      fill_in "Address", with: "2222 test street"
+      fill_in "City", with: "denver"
+      fill_in "Zip", with: 11111
+
+      click_on "Create Location"
+
+      expect(current_path).to eq(new_profile_location_path)
+    end
   end
 
   describe 'address show' do

@@ -1,4 +1,19 @@
 <h1>Main Address: </h1>
-<section id=home_address>
 
+<section id=home_address>
+  <p><%= @user.address %></p>
+  <p>City:<%= @user.city %></p>
+  <p>State:<%= @user.state %></p>
+  <p>Zip Code:<%= @user.zip %></p>
 </section>
+
+<h2>Additional Addresses:</h2>
+
+<% @locations.each do |location| %>
+  <%= tag.section id: "locations-#{location.id}" do %>
+    <p>Address: <%= location.address %></p>
+    <p>City: <%= location.city %></p>
+    <p>State: <%= location.state %></p>
+    <p>Zip Code: <%= location.zip %></p>
+  <% end %>
+<% end %>

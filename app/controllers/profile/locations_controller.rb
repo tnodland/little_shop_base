@@ -1,6 +1,6 @@
 class Profile::LocationsController < ApplicationController
   def index
     @user = current_user
-    # binding.pry
+    @locations = Location.where(user: @user)
   end
 end

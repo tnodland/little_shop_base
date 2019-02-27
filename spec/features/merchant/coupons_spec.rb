@@ -11,7 +11,7 @@ RSpec.describe 'merchant coupons' do
     end
     it "should see all coupons" do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
-
+ 
       visit dashboard_coupons_path(@merchant)
 
       expect(page).to have_link("#{@coupon.code}")

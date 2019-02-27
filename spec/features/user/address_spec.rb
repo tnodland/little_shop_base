@@ -136,9 +136,30 @@ RSpec.describe 'user addresses' do
 
       expect(current_path).to eq(edit_profile_location_path(@location))
     end
+
+    it "can delete an address" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
+      visit profile_locations_path
+
+      within "#locations-#{@location.id}" do
+        expect(page).to have_link("Delete this address")
+        click_link "Delete this address"
+      end
+
+      expect(current_path).to eq(profile_locations_path)
+      expect(page).to_not have_content("#{@location.address}")
+    end
+
+    it "can swap main address" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
+      visit profile_locations_path
+
+      within "#locations-#{@location.id}" do
+        expect(page).to have_link("Make this your primary address")
+      end
+    end
   end
 
-  describe 'address show' do
-
-  end
 end

@@ -32,6 +32,12 @@ class Profile::LocationsController < ApplicationController
     end
   end
 
+  def destroy
+    @location = Location.find(params[:id])
+    @location.destroy
+    redirect_to profile_locations_path
+  end
+
   private
 
   def location_params

@@ -34,6 +34,20 @@ RSpec.describe 'merchant dashboard' do
         expect(page).to have_content("Zip: #{@merchant.zip}")
       end
     end
+
+    describe "coupon link test" do
+      it "can see a link to manage their coupons" do
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+
+        visit dashboard_path
+
+        expect(page).to have_link("Manage my coupons")
+
+        click_link("Manage my coupons")
+
+        expect(current_path).to eq(dashboard_coupons_path(@merchant))
+      end
+    end
   end
 
   describe 'merchant user with orders visits their profile' do

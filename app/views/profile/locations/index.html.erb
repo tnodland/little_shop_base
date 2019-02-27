@@ -1,0 +1,21 @@
+<h1>Main Address: </h1>
+<section id=home_address>
+  <p><%= @user.address %></p>
+  <p>City:<%= @user.city %></p>
+  <p>State:<%= @user.state %></p>
+  <p>Zip Code:<%= @user.zip %></p>
+</section>
+
+<h2>Additional Addresses:</h2>
+<%= link_to "Add another address", new_profile_location_path %>
+<% @locations.each do |location| %>
+  <%= tag.section id: "locations-#{location.id}" do %>
+    <p>Address: <%= location.address %></p>
+    <p>City: <%= location.city %></p>
+    <p>State: <%= location.state %></p>
+    <p>Zip Code: <%= location.zip %></p>
+    <%= link_to "Edit this address", edit_profile_location_path(location)  %>
+    <%= link_to "Delete this address", profile_delete_location_path(location) %>
+    <%= link_to "Make this your primary address", profile_main_location_path(location) %>
+  <% end %>
+<% end %>

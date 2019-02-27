@@ -2,6 +2,8 @@ class Item < ApplicationRecord
   belongs_to :user, foreign_key: 'merchant_id'
   has_many :order_items
   has_many :orders, through: :order_items
+  has_many :coupons
+  has_many :coupon_users
 
   validates_presence_of :name, :description
   validates :price, presence: true, numericality: {
@@ -40,6 +42,10 @@ class Item < ApplicationRecord
 
   def self.unpopular_items(limit)
     item_popularity(limit, :asc)
+  end
+
+  def final_price(coupon)
+    self.price * coupon.modifier
   end
 
   def ever_ordered?

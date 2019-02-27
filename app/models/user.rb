@@ -6,8 +6,12 @@ class User < ApplicationRecord
   # as a user
   has_many :orders
   has_many :order_items, through: :orders
+  has_many :coupon_users
+  
   # as a merchant
   has_many :items, foreign_key: 'merchant_id'
+  has_many :coupons
+  has_many :locations
 
   validates_presence_of :name, :address, :city, :state, :zip
   validates :email, presence: true, uniqueness: true
@@ -76,6 +80,14 @@ class User < ApplicationRecord
          .group(:id)
          .order('quantity DESC, id')
          .limit(limit)
+  end
+
+  def five_active?
+    if (Coupon.where(["user_id = ? and active = ?", "#{self.id}", "true"])).count == 5
+      true
+    else
+      false
+    end
   end
 
   def total_items_sold

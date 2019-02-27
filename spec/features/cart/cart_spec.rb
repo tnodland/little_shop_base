@@ -194,6 +194,20 @@ RSpec.describe 'cart workflow', type: :feature do
     end
   end
 
+  describe 'user can use a coupon at checkout' do
+    it "is taken to a page to checkout with a coupon" do
+      user = create(:user)
+      coupon = Coupon.create(code: "twentyfive", modifier: 0.75, user: @merchant, item: @item)
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+
+      visit item_path(@item)
+      click_button "Add to Cart"
+      click_link "Cart: 1"
+
+      expect(current_path).to eq(cart_coupon_confirm_path)
+    end
+  end
+
   describe 'does not allow merchants to add items to a cart' do
     scenario 'as a merchant' do
       merchant = create(:merchant)

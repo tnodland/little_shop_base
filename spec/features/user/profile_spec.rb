@@ -112,5 +112,16 @@ RSpec.describe 'user profile', type: :feature do
 
       expect(page).to have_content("That email address is already in use")
     end
+
+    it "sees a link to manage addresses" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
+      visit profile_path
+
+      expect(page).to have_link("Manage Addresses")
+      click_link "Manage Addresses"
+
+      expect(current_path).to eq(profile_locations_path)
+    end
   end
 end

@@ -12,6 +12,13 @@ Rails.application.routes.draw do
   end
   namespace :profile do
     resources :orders, only: [:index, :create, :show, :destroy]
+    resources :locations
+    post '/locations/new', to: 'locations#create'
+    patch '/locations/:id/edit', to: 'locations#update'
+    get '/location/delete/:id', to: 'locations#destroy', as: :delete_location
+    get '/locations/main/:id', to: 'locations#main', as: :main_location
+    get '/orders/new/:id', to: 'orders#new'
+    post '/orders/new/:id', to: 'orders#create', as: :coupon_profile_orders
   end
 
   resources :users, only: [:create, :update]
@@ -22,8 +29,11 @@ Rails.application.routes.draw do
   delete '/cart', to: 'cart#destroy', as: :cart_empty
   delete '/cart/item/:id', to: 'cart#remove_more_item', as: :cart_remove_more_item
   delete '/cart/item/:id/all', to: 'cart#remove_all_of_item', as: :cart_remove_item_all
-
+  get '/cart/coupon/confirm', to: 'coupons#confirm'
+  get '/cart/coupon/use', to: 'coupons#use'
+  post '/cart/coupon/use', to: 'coupons#use'
   resources :items, only: [:index, :show]
+
 
   scope :dashboard, as: :dashboard do
     get '/', to: 'merchants#show'
@@ -32,6 +42,15 @@ Rails.application.routes.draw do
     put '/items/:id/disable', to: 'merchants/items#disable', as: :disable_item
     get '/orders/:id', to: 'merchants/orders#show', as: :order
     put '/order_items/:id', to: 'merchants/order_items#update', as: :fulfill_order_item
+    get '/coupons/:id', to: 'merchants/coupons#index', as: :coupons
+    get '/coupon/:id', to: 'merchants/coupons#show', as: :coupon
+    get '/coupons/new/:id', to: 'merchants/coupons#new', as: :new_coupon
+    post '/coupons/new/:id', to: 'merchants/coupons#create'
+    get '/coupons/edit/:id', to: 'merchants/coupons#edit', as: :edit_coupon
+    patch '/coupons/edit/:id', to: 'merchants/coupons#update', as: :update_coupon
+    get '/coupon/enable/:id', to: 'merchants/coupons#enable', as: :coupon_enable
+    get '/coupon/disable/:id', to: 'merchants/coupons#disable', as: :coupon_disable
+    get '/coupon/delete/:id', to: 'merchants/coupons#destroy', as: :delete_coupon
   end
 
   resources :merchants, only: [:index, :show]

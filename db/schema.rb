@@ -10,10 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190210231817) do
+ActiveRecord::Schema.define(version: 20190227054001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "coupon_users", force: :cascade do |t|
+    t.bigint "coupon_id"
+    t.bigint "user_id"
+    t.boolean "used", default: false
+    t.index ["coupon_id"], name: "index_coupon_users_on_coupon_id"
+    t.index ["user_id"], name: "index_coupon_users_on_user_id"
+  end
+
+  create_table "coupons", force: :cascade do |t|
+    t.string "code"
+    t.float "modifier"
+    t.bigint "user_id"
+    t.bigint "item_id"
+    t.boolean "active", default: true
+    t.index ["item_id"], name: "index_coupons_on_item_id"
+    t.index ["user_id"], name: "index_coupons_on_user_id"
+  end
 
   create_table "items", force: :cascade do |t|
     t.string "name"
@@ -26,6 +44,15 @@ ActiveRecord::Schema.define(version: 20190210231817) do
     t.datetime "updated_at", null: false
     t.bigint "merchant_id"
     t.index ["merchant_id"], name: "index_items_on_merchant_id"
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "address"
+    t.string "city"
+    t.string "state"
+    t.string "zip"
+    t.index ["user_id"], name: "index_locations_on_user_id"
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -48,6 +75,14 @@ ActiveRecord::Schema.define(version: 20190210231817) do
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
+  create_table "user_coupons", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "item_id"
+    t.boolean "used", default: true
+    t.index ["item_id"], name: "index_user_coupons_on_item_id"
+    t.index ["user_id"], name: "index_user_coupons_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "password_digest"
@@ -65,8 +100,15 @@ ActiveRecord::Schema.define(version: 20190210231817) do
     t.index ["state"], name: "index_users_on_state"
   end
 
+  add_foreign_key "coupon_users", "coupons"
+  add_foreign_key "coupon_users", "users"
+  add_foreign_key "coupons", "items"
+  add_foreign_key "coupons", "users"
   add_foreign_key "items", "users", column: "merchant_id"
+  add_foreign_key "locations", "users"
   add_foreign_key "order_items", "items"
   add_foreign_key "order_items", "orders"
   add_foreign_key "orders", "users"
+  add_foreign_key "user_coupons", "items"
+  add_foreign_key "user_coupons", "users"
 end

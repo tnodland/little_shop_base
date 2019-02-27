@@ -1,0 +1,10 @@
+<%= form_for @coupon, url: dashboard_new_coupon_path(@item) do |f| %>
+
+  <%= f.label :code %>
+  <%= f.text_field :code %>
+
+  <%= f.label :modifier %>
+  <%= f.number_field :modifier, min: 0.00, step: :any %>
+
+  <%= f.submit  %>
+<% end %>

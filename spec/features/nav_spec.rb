@@ -16,7 +16,7 @@ RSpec.describe 'Site Nav', type: :feature do
     expect(current_path).to eq(merchants_path)
 
     click_link 'Cart: 0'
-    expect(current_path).to eq(cart_path)
+    expect(current_path).to eq(cart_coupon_confirm_path)
 
     click_link 'Log in'
     expect(current_path).to eq(login_path)

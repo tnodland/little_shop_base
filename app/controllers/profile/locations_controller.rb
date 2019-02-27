@@ -38,6 +38,24 @@ class Profile::LocationsController < ApplicationController
     redirect_to profile_locations_path
   end
 
+  def main
+    @user = current_user
+    @location = Location.find(params[:id])
+    @location2 = Location.create(user: @user,
+            address: @user.address,
+            city: @user.city,
+            state: @user.state,
+            zip: @user.zip)
+
+    @user.update(address: @location.address,
+                city: @location.city,
+                state: @location.state,
+                zip: @location.zip)
+
+    @location.destroy
+    redirect_to profile_locations_path
+  end
+
   private
 
   def location_params

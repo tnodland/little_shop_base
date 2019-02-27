@@ -158,6 +158,16 @@ RSpec.describe 'user addresses' do
 
       within "#locations-#{@location.id}" do
         expect(page).to have_link("Make this your primary address")
+        click_link "Make this your primary address"
+      end
+
+      expect(current_path).to eq(profile_locations_path)
+
+      within "#home_address" do
+        expect(page).to have_content(@location.address)
+        expect(page).to have_content(@location.city)
+        expect(page).to have_content(@location.state)
+        expect(page).to have_content(@location.zip)
       end
     end
   end

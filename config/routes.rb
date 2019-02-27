@@ -16,7 +16,7 @@ Rails.application.routes.draw do
     post '/locations/new', to: 'locations#create'
     patch '/locations/:id/edit', to: 'locations#update'
     get '/location/delete/:id', to: 'locations#destroy', as: :delete_location
-    # delete '/location/:id', to: 'locations#destroy', as: :delete_location
+    get '/locations/main/:id', to: 'locations#main', as: :main_location
     get '/orders/new/:id', to: 'orders#new'
     post '/orders/new/:id', to: 'orders#create', as: :coupon_profile_orders
   end

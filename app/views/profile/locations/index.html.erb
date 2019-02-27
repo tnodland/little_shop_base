@@ -16,5 +16,6 @@
     <p>Zip Code: <%= location.zip %></p>
     <%= link_to "Edit this address", edit_profile_location_path(location)  %>
     <%= link_to "Delete this address", profile_delete_location_path(location) %>
+    <%= link_to "Make this your primary address", profile_main_location_path(location) %>
   <% end %>
 <% end %>

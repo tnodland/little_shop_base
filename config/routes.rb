@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   namespace :profile do
     resources :orders, only: [:index, :create, :show, :destroy]
     resources :locations
+    post '/locations/new', to: 'locations#create'
   end
 
   resources :users, only: [:create, :update]

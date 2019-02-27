@@ -78,8 +78,42 @@ RSpec.describe 'user addresses' do
       expect(current_path).to eq(new_profile_location_path)
     end
 
-    it "can" do
+    it "can see a link to edit addresses" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
 
+      visit profile_locations_path
+
+      within "#locations-#{@location.id}" do
+        expect(page).to have_link("Edit this address")
+      end
+    end
+
+    it "can edit an address" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
+      visit profile_locations_path
+
+      within "#locations-#{@location.id}" do
+        click_link "Edit this address"
+      end
+
+      expect(current_path).to eq(edit_profile_location_path(@location))
+
+      fill_in "Address", with: "2222 test street"
+      fill_in "City", with: "denver"
+      fill_in "State", with: "colorado"
+      fill_in "Zip", with: 11111
+
+      click_on "Update Location"
+
+      expect(current_path).to eq(profile_locations_path)
+
+      within "#locations-#{@location.id}" do
+        expect(page).to have_content("2222 test street")
+        expect(page).to have_content("denver")
+        expect(page).to have_content("colorado")
+        expect(page).to have_content(11111)
+      end
     end
   end
 

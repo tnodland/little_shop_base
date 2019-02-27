@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     resources :orders, only: [:index, :create, :show, :destroy]
     resources :locations
     post '/locations/new', to: 'locations#create'
+    patch '/locations/:id/edit', to: 'locations#update'
     get '/orders/new/:id', to: 'orders#new'
     post '/orders/new/:id', to: 'orders#create', as: :coupon_profile_orders
   end

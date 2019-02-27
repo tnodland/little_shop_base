@@ -77,6 +77,10 @@ RSpec.describe 'user addresses' do
 
       expect(current_path).to eq(new_profile_location_path)
     end
+
+    it "can" do
+
+    end
   end
 
   describe 'address show' do

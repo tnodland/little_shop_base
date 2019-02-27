@@ -11,7 +11,7 @@ RSpec.describe 'merchant coupons' do
     end
     it "should see all coupons" do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
- 
+
       visit dashboard_coupons_path(@merchant)
 
       expect(page).to have_link("#{@coupon.code}")
@@ -130,8 +130,11 @@ RSpec.describe 'merchant coupons' do
       expect(page).to_not have_content("#{@coupon.code}")
     end
 
-    it "can't delete a coupon that has been used" do
+    xit "can't delete a coupon that has been used" do
 
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+
+      visit dashboard_coupons_path(@merchant)
     end
 
     it "can disable a coupon" do

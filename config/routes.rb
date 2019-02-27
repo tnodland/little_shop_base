@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   end
   namespace :profile do
     resources :orders, only: [:index, :create, :show, :destroy]
+    resources :locations
   end
 
   resources :users, only: [:create, :update]

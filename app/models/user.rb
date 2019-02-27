@@ -6,6 +6,8 @@ class User < ApplicationRecord
   # as a user
   has_many :orders
   has_many :order_items, through: :orders
+  has_many :coupon_users
+  
   # as a merchant
   has_many :items, foreign_key: 'merchant_id'
   has_many :coupons

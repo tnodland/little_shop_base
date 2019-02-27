@@ -7,13 +7,24 @@ class Profile::OrdersController < ApplicationController
   end
 
   def create
+    unless params[:format].nil?
+      @coupon = Coupon.find(params[:format])
+    end
+
     order = Order.create(user: current_user, status: :pending)
+
     @cart.items.each do |item|
       order.order_items.create!(
         item: item,
         price: item.price,
         quantity: @cart.count_of(item.id),
         fulfilled: false)
+        
+      unless @coupon.nil?
+        if @coupon.item_id == item.id
+          CouponUser.create(user: current_user, coupon: @coupon, used: true)
+        end
+      end
     end
     session[:cart] = nil
 

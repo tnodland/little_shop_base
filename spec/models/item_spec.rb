@@ -72,6 +72,15 @@ RSpec.describe Item, type: :model do
         expect(item.avg_time_to_fulfill).to eq('n/a')
       end
     end
+
+    it ".final_price" do
+      user = create(:user)
+      merchant = create(:merchant)
+      item = create(:item, user: merchant, price: 10)
+      coupon = Coupon.create(code: "twenty", modifier: 0.8, user: merchant, item: item)
+
+      expect(item.final_price(coupon)).to eq(8)
+    end
   end
 
   it '.ever_ordered?' do

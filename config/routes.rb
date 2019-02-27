@@ -14,6 +14,8 @@ Rails.application.routes.draw do
     resources :orders, only: [:index, :create, :show, :destroy]
     resources :locations
     post '/locations/new', to: 'locations#create'
+    get '/orders/new/:id', to: 'orders#new'
+    post '/orders/new/:id', to: 'orders#create', as: :coupon_profile_orders
   end
 
   resources :users, only: [:create, :update]
@@ -24,8 +26,9 @@ Rails.application.routes.draw do
   delete '/cart', to: 'cart#destroy', as: :cart_empty
   delete '/cart/item/:id', to: 'cart#remove_more_item', as: :cart_remove_more_item
   delete '/cart/item/:id/all', to: 'cart#remove_all_of_item', as: :cart_remove_item_all
-  get '/coupon/confirm', to: 'coupons#confirm'
-  get '/coupon/use', to: 'coupons#use'
+  get '/cart/coupon/confirm', to: 'coupons#confirm'
+  get '/cart/coupon/use', to: 'coupons#use'
+  post '/cart/coupon/use', to: 'coupons#use'
   resources :items, only: [:index, :show]
 
 

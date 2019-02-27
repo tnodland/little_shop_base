@@ -1,0 +1,9 @@
+<h1>Enter any coupons here</h1>
+<p> <%= link_to "No coupons", cart_path %> </p>
+<%= form_tag coupon_use_path do %>
+ <div>
+   <%= label_tag :coupon_code %>
+   <%= text_field_tag :coupon_code, params[:coupon_code] %>
+   <%= submit_tag 'Use this coupon' %>
+ </div>
+<% end %>

@@ -25,7 +25,11 @@ class Profile::LocationsController < ApplicationController
   def update
     @location = Location.find(params[:id])
     @location.update(location_params)
-    redirect_to profile_locations_path
+    if @location.save
+      redirect_to profile_locations_path
+    else
+      redirect_to edit_profile_location_path(@location)
+    end
   end
 
   private

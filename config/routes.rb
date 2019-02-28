@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     get '/locations/main/:id', to: 'locations#main', as: :main_location
     get '/orders/new/:id', to: 'orders#new'
     post '/orders/new/:id', to: 'orders#create', as: :coupon_profile_orders
+    get '/address/orders/:id', to: 'orders#new', as: :address_orders
+    post '/address/orders/:id', to: 'orders#create'
   end
 
   resources :users, only: [:create, :update]
@@ -34,6 +36,7 @@ Rails.application.routes.draw do
   post '/cart/coupon/use', to: 'coupons#use'
   resources :items, only: [:index, :show]
 
+  # get '/checkout/address', to: 'checkout#select'
 
   scope :dashboard, as: :dashboard do
     get '/', to: 'merchants#show'

@@ -4,7 +4,9 @@ RSpec.describe 'user addresses' do
   describe 'address index'do
     before :each do
       @user = create(:user)
-      @location = @user.locations.create(address: "1111 test street", city: "testville", state: "co", zip: 80111)
+      @location = @user.locations.create(address: "1111 test street", city: "testville", state: "co", zip: 80111, name: "home")
+      @merchant_1 = create(:merchant)
+      @item_1 = create(:item, user: @merchant_1)
     end
 
     it "should see all addresses" do
@@ -172,4 +174,34 @@ RSpec.describe 'user addresses' do
     end
   end
 
+  describe "checkout" do
+    before :each do
+      @user = create(:user)
+      @location = @user.locations.create(address: "1111 test street", city: "testville", state: "co", zip: 80111, name: "home")
+      @location2 = @user.locations.create(address: "2222 test street", city: "testville", state: "co", zip: 80111, name: "work")
+      @merchant_1 = create(:merchant)
+      @item_1 = create(:item, user: @merchant_1)
+    end
+
+    it "can select an address as checkout" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
+      visit items_path
+
+      within "#item-#{@item_1.id}" do
+        click_on "Add to Cart"
+      end
+
+      visit cart_path
+
+      expect(page).to have_button("Check out with main address")
+      expect(page).to have_button("Check out with #{@location.name} address")
+      expect(page).to have_button("Check out with #{@location2.name} address")
+
+      click_on "Check out with #{@location.name} address"
+      
+      expect(current_path).to eq(profile_orders_path)
+      expect(page).to have_content("#{@location.address}")
+    end
+  end
 end

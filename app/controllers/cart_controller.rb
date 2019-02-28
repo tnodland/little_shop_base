@@ -3,6 +3,7 @@ class CartController < ApplicationController
   include ActionView::Helpers::TextHelper
 
   def show
+    @locations = Location.where(user: current_user)
     @items = @cart.items
   end
 

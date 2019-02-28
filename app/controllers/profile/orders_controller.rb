@@ -7,19 +7,34 @@ class Profile::OrdersController < ApplicationController
   end
 
   def create
+    @location = Location.find(params[:id])
     unless params[:format].nil?
       @coupon = Coupon.find(params[:format])
     end
 
-    order = Order.create(user: current_user, status: :pending)
-
+    if @location.nil?
+      order = Order.create(user: current_user,
+         status: :pending,
+         user_address: current_user.address,
+         user_city: current_user.city,
+         user_state: current_user.state,
+         user_zip: current_user.zip)
+    else
+      order = Order.create(user: current_user,
+         status: :pending,
+         user_address: @location.address,
+         user_city: @location.city,
+         user_state: @location.state,
+         user_zip: @location.zip)
+    end
+    
     @cart.items.each do |item|
       order.order_items.create!(
         item: item,
         price: item.price,
         quantity: @cart.count_of(item.id),
         fulfilled: false)
-        
+
       unless @coupon.nil?
         if @coupon.item_id == item.id
           CouponUser.create(user: current_user, coupon: @coupon, used: true)

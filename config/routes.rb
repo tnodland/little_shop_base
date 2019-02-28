@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     post '/orders/new/:id', to: 'orders#create', as: :coupon_profile_orders
     get '/address/orders/:id', to: 'orders#new', as: :address_orders
     post '/address/orders/:id', to: 'orders#create'
+    get 'order/address/change/:order/:location', to: 'orders#update', as: :order_address_change
   end
 
   resources :users, only: [:create, :update]

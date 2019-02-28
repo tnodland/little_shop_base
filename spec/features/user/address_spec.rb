@@ -199,9 +199,27 @@ RSpec.describe 'user addresses' do
       expect(page).to have_button("Check out with #{@location2.name} address")
 
       click_on "Check out with #{@location.name} address"
-      
+
       expect(current_path).to eq(profile_orders_path)
       expect(page).to have_content("#{@location.address}")
     end
+
+    it "can change the address of a pending order" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
+      order = create(:order, user: @user, user_address: @user.address, user_state: @user.state, user_city: @user.city, user_zip: @user.zip)
+
+      visit profile_order_path(order)
+
+      expect(page).to have_content("Ship to #{@location.address} #{@location.city}, #{@location.state} #{@location.zip} instead")
+
+      click_link("Ship to #{@location.address} #{@location.city}, #{@location.state} #{@location.zip} instead")
+
+      expect(current_path).to eq(profile_order_path(order))
+      expect(page).to have_content("Shipping to: #{@location.address} #{@location.city}, #{@location.state} #{@location.zip}")
+      expect(page).to_not have_link("Ship to #{@location.address} #{@location.city}, #{@location.state} #{@location.zip} instead")
+    end
+
+  
   end
 end

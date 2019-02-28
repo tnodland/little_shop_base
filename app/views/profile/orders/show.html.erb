@@ -5,9 +5,16 @@
   <p>Status: <%= @order.status %></p>
   <p>Item Count: <%= @order.total_item_count %></p>
   <p>Total Cost: <%= number_to_currency(@order.total_cost) %></p>
-  <p>Shipping to: <%= @order.user_address %> <%= @order.user_city %> <%= @order.user_state %> <%= @order.user_zip %></p>
+  <p>Shipping to: <%= @order.user_address %> <%= @order.user_city %>, <%= @order.user_state %> <%= @order.user_zip %></p>
   <% if @order.status == 'pending' %>
   <p><%= button_to 'Cancel Order', profile_order_path(@order), method: :delete %></p>
+    <% @locations.each do |location| %>
+      <% unless @order.user_address == location.address %>
+      <p id="location-#{location.id}">
+        <%= link_to "Ship to #{location.address} #{location.city}, #{location.state} #{location.zip} instead", profile_order_address_change_path(@order, location)%>
+      </p>
+      <% end %>
+    <% end %>
   <% end %>
 
   <% @order.order_items.each do |oitem| %>

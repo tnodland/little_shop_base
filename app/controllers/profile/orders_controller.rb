@@ -51,17 +51,26 @@ class Profile::OrdersController < ApplicationController
   end
 
   def show
+    @user = current_user
     @order = Order.find(params[:id])
     @locations = Location.where(user: current_user)
   end
 
   def update
     order = Order.find(params[:order])
-    location = Location.find(params[:location])
-    order.update(user_address: location.address,
-      user_city: location.city,
-      user_state: location.state,
-      user_zip: location.zip)
+
+    if params[:location].nil?
+      order.update(user_address: current_user.address,
+        user_city: current_user.city,
+        user_state: current_user.state,
+        user_zip: current_user.zip)
+    else
+      location = Location.find(params[:location])
+      order.update(user_address: location.address,
+        user_city: location.city,
+        user_state: location.state,
+        user_zip: location.zip)
+    end
 
     redirect_to profile_order_path(order)
   end

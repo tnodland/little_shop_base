@@ -220,6 +220,18 @@ RSpec.describe 'user addresses' do
       expect(page).to_not have_link("Ship to #{@location.address} #{@location.city}, #{@location.state} #{@location.zip} instead")
     end
 
-  
+    it "can change the adress of a pending order to the main address" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
+      order = create(:order, user: @user, user_address: @location.address, user_state: @location.state, user_city: @location.city, user_zip: @location.zip)
+
+      visit profile_order_path(order)
+
+      expect(page).to have_link("Ship to main address instead")
+      click_link "Ship to main address instead"
+
+      expect(current_path).to eq(profile_order_path(order))
+      expect(page).to_not have_content("Ship to main address instead")
+    end
   end
 end

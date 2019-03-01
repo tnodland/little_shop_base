@@ -8,6 +8,9 @@
   <p>Shipping to: <%= @order.user_address %> <%= @order.user_city %>, <%= @order.user_state %> <%= @order.user_zip %></p>
   <% if @order.status == 'pending' %>
   <p><%= button_to 'Cancel Order', profile_order_path(@order), method: :delete %></p>
+  <% unless @order.user_address == @user.address %>
+    <p><%= link_to "Ship to main address instead", profile_order_address_main_path(@order) %></p>
+  <% end %>
     <% @locations.each do |location| %>
       <% unless @order.user_address == location.address %>
       <p id="location-#{location.id}">

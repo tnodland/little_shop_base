@@ -33,9 +33,9 @@ RSpec.describe "coupon confirm" do
 
       fill_in "Coupon code", with: "twenty"
       click_button "Use this coupon"
-
-      expect(current_path).to eq(cart_coupon_use_path)
-      expect(page).to have_content("Price with coupon: $8")
+      # save_and_open_page
+      expect(current_path).to eq(cart_path)
+      expect(page).to have_content("Total with coupon: $8")
 
       click_on 'Check out'
 

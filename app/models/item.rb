@@ -44,8 +44,15 @@ class Item < ApplicationRecord
     item_popularity(limit, :asc)
   end
 
-  def final_price(coupon)
-    self.price * coupon.modifier
+  def final_price(cart, coupons)
+    current_coupon = self.find_coupon(coupons)
+    coupon = Coupon.find(current_coupon["id"])
+    cart.keys.each do |item|
+      if item.to_i == self.id
+        @amount = cart[item]
+      end
+    end
+    (self.price * @amount) * coupon.modifier
   end
 
   def ever_ordered?
@@ -54,9 +61,9 @@ class Item < ApplicationRecord
       .count > 0
   end
 
-  def find_coupon(cart)
-    cart.coupons.each do |coupon|
-      if coupon.item_id == self.id
+  def find_coupon(coupons)
+    coupons.each do |coupon|
+      if coupon["item_id"] == self.id
         return coupon
       end
     end

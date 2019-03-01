@@ -90,9 +90,13 @@ class User < ApplicationRecord
     end
   end
 
-  def address_used?
-    Order.find(user_address: self.address)
-  end
+  # def address_used?
+  #   if Order.where(user_address: self.address).count > 0
+  #     true 
+  #   elsif
+  #     Ord
+  #   end
+  # end
 
   def total_items_sold
     items.joins(:order_items)

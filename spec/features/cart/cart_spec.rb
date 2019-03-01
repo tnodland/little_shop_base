@@ -204,7 +204,7 @@ RSpec.describe 'cart workflow', type: :feature do
       click_button "Add to Cart"
       click_link "Cart: 1"
 
-      expect(current_path).to eq(cart_coupon_confirm_path)
+      expect(current_path).to eq(cart_path)
     end
   end
 

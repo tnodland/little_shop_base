@@ -31,7 +31,7 @@
     </p>
 
     <% if current_reguser? || current_user.nil? %>
-      <p>
+      <p id="cart_button">
       <%= button_to 'Add to Cart', cart_item_path(item), method: :post %>
       </p>
     <% end %>

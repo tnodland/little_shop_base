@@ -11,6 +11,9 @@
   <% unless @order.user_address == @user.address %>
     <p><%= link_to "Ship to main address instead", profile_order_address_main_path(@order) %></p>
   <% end %>
+
+
+  <% unless @locations.nil? %>
     <% @locations.each do |location| %>
       <% unless @order.user_address == location.address %>
       <p id="location-#{location.id}">
@@ -18,6 +21,7 @@
       </p>
       <% end %>
     <% end %>
+  <% end %>
   <% end %>
 
   <% @order.order_items.each do |oitem| %>

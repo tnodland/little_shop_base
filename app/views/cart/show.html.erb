@@ -23,14 +23,16 @@
   <% @items.each do |item| %>
     <%= tag.div id: "item-#{item.id}" do %>
       <%= render partial: "cart_item", locals: {item: item, img_width: 150} %>
-      <p>Use a coupon for this item</p>
-        <%= form_tag cart_coupon_use_path do %>
-          <div>
-            <%= label_tag :coupon_code %>
-            <%= text_field_tag :coupon_code, params[:coupon_code] %>
-            <%= submit_tag 'Use this coupon' %>
-          </div>
-        <% end %>
+      <% unless !session[:coupon].nil? %>
+        <p>Use a coupon for this item</p>
+          <%= form_tag cart_coupon_use_path do %>
+            <div>
+              <%= label_tag :coupon_code %>
+              <%= text_field_tag :coupon_code, params[:coupon_code] %>
+              <%= submit_tag 'Use this coupon' %>
+            </div>
+          <% end %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

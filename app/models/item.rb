@@ -3,7 +3,7 @@ class Item < ApplicationRecord
   has_many :order_items
   has_many :orders, through: :order_items
   has_many :coupons
-  has_many :coupon_users
+  has_many :coupon_users, through: :coupons
 
   validates_presence_of :name, :description
   validates :price, presence: true, numericality: {

@@ -83,7 +83,6 @@ ActiveRecord::Schema.define(version: 20190228201615) do
   create_table "user_coupons", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "item_id"
-    t.boolean "used", default: true
     t.index ["item_id"], name: "index_user_coupons_on_item_id"
     t.index ["user_id"], name: "index_user_coupons_on_user_id"
   end

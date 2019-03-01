@@ -7,7 +7,7 @@ RSpec.describe Coupon do
   end
 
   context "validations" do
-    it {should validate_presence_of :code}
+    it {should validate_uniqueness_of :code}
     it {should validate_presence_of :modifier}
   end
 end

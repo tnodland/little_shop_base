@@ -7,7 +7,7 @@ class User < ApplicationRecord
   has_many :orders
   has_many :order_items, through: :orders
   has_many :coupon_users
-  
+
   # as a merchant
   has_many :items, foreign_key: 'merchant_id'
   has_many :coupons
@@ -88,6 +88,10 @@ class User < ApplicationRecord
     else
       false
     end
+  end
+
+  def address_used?
+    Order.find(user_address: self.address)
   end
 
   def total_items_sold

@@ -122,14 +122,14 @@ RSpec.describe User, type: :model do
       @i7 = create(:item, merchant_id: @m1.id, inventory: 20)
       @i9 = create(:item, merchant_id: @m1.id, inventory: 20)
       @i8 = create(:item, merchant_id: @m2.id, inventory: 20)
-      o1 = create(:completed_order, user: @u1)
-      o2 = create(:completed_order, user: @u2)
+      @o1 = create(:completed_order, user: @u1)
+      @o2 = create(:completed_order, user: @u2)
       o3 = create(:completed_order, user: @u3)
       o4 = create(:completed_order, user: @u1)
       o5 = create(:cancelled_order, user: u5)
       o6 = create(:completed_order, user: u6)
-      @oi1 = create(:order_item, item: @i1, order: o1, quantity: 2, created_at: 1.days.ago)
-      @oi2 = create(:order_item, item: @i2, order: o2, quantity: 8, created_at: 7.days.ago)
+      @oi1 = create(:order_item, item: @i1, order: @o1, quantity: 2, created_at: 1.days.ago)
+      @oi2 = create(:order_item, item: @i2, order: @o2, quantity: 8, created_at: 7.days.ago)
       @oi3 = create(:order_item, item: @i2, order: o3, quantity: 6, created_at: 7.days.ago)
       @oi4 = create(:order_item, item: @i3, order: o3, quantity: 4, created_at: 6.days.ago)
       @oi5 = create(:order_item, item: @i4, order: o4, quantity: 3, created_at: 4.days.ago)
@@ -168,6 +168,15 @@ RSpec.describe User, type: :model do
       coupon5 = @i1.coupons.create(user: @m1, code: "test_coupon5", modifier: 0.75)
 
       expect(@m1.five_active?).to eq(true)
+    end
+
+    it ".address_used?" do
+      location = @u2.locations.create(address: "test", city: "testt", state: "co", zip: 1, name: "home")
+      @o1.update(user_address: @u1.address, user_state: @u1.state, user_city: @u1.city, user_zip: @u1.zip)
+      @o2.update(user_address: location.address, user_state: location.state, user_city: location.city, user_zip: location.zip)
+
+      expect(@u1.address_used?).to eq(true)
+      expect(@u2.address_used?).to eq(true)
     end
 
     it '.total_items_sold' do

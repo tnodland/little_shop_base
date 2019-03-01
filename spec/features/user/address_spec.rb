@@ -153,6 +153,17 @@ RSpec.describe 'user addresses' do
       expect(page).to_not have_content("#{@location.address}")
     end
 
+    it "can't delete an address that has been used in an order" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+      order = create(:completed_order, user: @user, user_address: @location.address, user_state: @location.state, user_city: @location.city, user_zip: @location.zip)
+
+      visit profile_locations_path
+
+      within "#locations-#{@location.id}" do
+        expect(page).to_not have_link("Delete this address")
+      end
+    end
+
     it "can swap main address" do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
 

@@ -17,7 +17,28 @@ RSpec.describe "coupon usage" do
       click_on "Add to Cart"
       click_on "Cart: 1"
 
-      expect(page).to have_content("Add a coupon")
+      within "#item-#{@item.id}" do
+        expect(page).to have_content "Use a coupon for this item"
+      end
+    end
+
+    it "can use a coupon" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
+      visit item_path(@item)
+
+      click_on "Add to Cart"
+      click_on "Cart: 1"
+      within "#item-#{@item.id}" do
+        fill_in :coupon_code, with: "twentyfive"
+        click_on "Use this coupon"
+      end
+      # save_and_open_page
+
+      expect(current_path).to eq(cart_path)
+      within "#item-#{@item.id}" do
+        expect(page).to have_content("Subtotal: $2.70")
+      end
     end
   end
 end

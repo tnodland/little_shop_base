@@ -32,6 +32,10 @@ class CartController < ApplicationController
     redirect_to cart_path
   end
 
+  def update
+    binding.pry
+  end
+
   private
 
   def remove_item(item_id, count=nil)

@@ -94,4 +94,20 @@ RSpec.describe Cart do
 
     expect(cart.grand_total).to eq(cart.subtotal(item_1.id) + cart.subtotal(item_2.id))
   end
+
+  it ".add_coupon" do
+    cart = Cart.new({
+      '1' => 2,
+      '2' => 3
+    })
+
+    user = create(:user)
+    merchant = create(:merchant)
+    item = create(:item, user: merchant)
+    coupon = item.coupons.create(user: merchant, code: "twentyfive", modifier: 0.75)
+
+    cart.add_coupon(coupon)
+
+    expect(cart.coupons).to eq([coupon])
+  end
 end

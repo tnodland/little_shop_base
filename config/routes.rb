@@ -34,8 +34,8 @@ Rails.application.routes.draw do
   delete '/cart/item/:id', to: 'cart#remove_more_item', as: :cart_remove_more_item
   delete '/cart/item/:id/all', to: 'cart#remove_all_of_item', as: :cart_remove_item_all
   get '/cart/coupon/confirm', to: 'coupons#confirm'
-  get '/cart/coupon/use', to: 'coupons#use'
-  post '/cart/coupon/use', to: 'coupons#use'
+  get '/cart/coupon/use', to: 'cart#update'
+  post '/cart/coupon/use', to: 'cart#update'
   resources :items, only: [:index, :show]
 
   # get '/checkout/address', to: 'checkout#select'

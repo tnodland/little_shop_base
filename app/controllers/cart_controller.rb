@@ -33,7 +33,12 @@ class CartController < ApplicationController
   end
 
   def update
-    binding.pry
+    coupon = Coupon.where(code: params[:coupon_code])
+    @cart.add_coupon(coupon.first)
+    session[:cart] = @cart.contents
+    session[:coupons] = @cart.coupons
+    # binding.pry
+    redirect_to cart_path
   end
 
   private

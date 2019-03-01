@@ -53,4 +53,12 @@ class Item < ApplicationRecord
       .where(fulfilled: true, orders: {status: :completed}, item_id: self.id)
       .count > 0
   end
+
+  def find_coupon(cart)
+    cart.coupons.each do |coupon|
+      if coupon.item_id == self.id
+        return coupon
+      end
+    end
+  end
 end

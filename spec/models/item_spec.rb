@@ -73,6 +73,24 @@ RSpec.describe Item, type: :model do
       end
     end
 
+    it ".find_coupon" do
+      cart = Cart.new({
+        '1' => 2,
+        '2' => 3
+      })
+
+      user = create(:user)
+      merchant = create(:merchant)
+      item = create(:item, user: merchant)
+      item2 = create(:item, user: merchant)
+      coupon = item.coupons.create(user: merchant, code: "twentyfive", modifier: 0.75)
+      coupon2 = item2.coupons.create(user: merchant, code: "twenty", modifier: 0.80)
+
+      cart.add_coupon(coupon)
+
+      expect(item.find_coupon(cart)).to eq(coupon)
+    end
+
     it ".final_price" do
       user = create(:user)
       merchant = create(:merchant)
